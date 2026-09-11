@@ -42,7 +42,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="/#booking" className="text-background/70 hover:text-background smooth-hover text-xs font-light">
+                <a href={`${import.meta.env.BASE_URL}#booking`} className="text-background/70 hover:text-background smooth-hover text-xs font-light">
                   Get Started
                 </a>
               </li>
