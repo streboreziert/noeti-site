@@ -13,4 +13,12 @@ npm install
 npm run dev
 ```
 
-Live: https://streboreziert.github.io/noeti-site/
+Live: **[streboreziert.github.io/noeti-site](https://streboreziert.github.io/noeti-site/)**
+
+The public copy is the `docs/` folder (GitHub Pages). After changing the site:
+
+```bash
+VITE_BASE=/noeti-site/ npm run build
+rm -rf docs && mkdir docs && cp -R dist/. docs/ && touch docs/.nojekyll
+```
+
