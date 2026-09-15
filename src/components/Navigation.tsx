@@ -36,7 +36,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
   };
   const navItems = [
     {
-      label: "Models",
+      label: "Plans",
       href: "/models",
       isRoute: true,
     },
@@ -106,7 +106,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
               className={`rounded-full smooth-hover text-[11px] uppercase tracking-wider font-normal backdrop-blur-md border border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
               onClick={handleBookNow}
             >
-              Get Started
+              Subscribe
             </Button>
           </div>
 
@@ -168,7 +168,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
                   handleBookNow();
                 }}
               >
-                Get Started
+                Subscribe
               </Button>
             </motion.div>
           )}

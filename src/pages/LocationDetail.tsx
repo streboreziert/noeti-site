@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Star, Calendar, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
+import { ParallaxBanner } from "@/components/motion/ParallaxBanner";
+import { PageTransition } from "@/components/motion/PageTransition";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -13,13 +15,13 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from "sonner";
-import { getModelById } from "@/data/models";
+import { getModelById, legacyIds } from "@/data/models";
 import { mailTo } from "@/lib/contact";
 
 const LocationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = id ? getModelById(id) : null;
+  const location = id ? getModelById(legacyIds[id] ?? id) : null;
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: undefined
@@ -27,14 +29,12 @@ const LocationDetail = () => {
   const [guests, setGuests] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
 
   if (!location) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-xl font-light mb-4">Model not found</h1>
+          <h1 className="text-xl font-light mb-4">Plan not found</h1>
           <Button onClick={() => navigate("/")} variant="outline" size="sm" className="text-xs font-light">
             Return Home
           </Button>
@@ -44,11 +44,11 @@ const LocationDetail = () => {
   }
 
   // Combine main image with detail images for the gallery
-  const allImages = [location.image, ...location.images];
+  const allImages = location.images;
 
   const handleBooking = () => {
     if (!dateRange?.from || !dateRange?.to || !guests) {
-      toast.error("Please select start, review dates and number of seats");
+      toast.error("Please pick a meeting window and live projects");
       return;
     }
     mailTo(
@@ -73,22 +73,10 @@ const LocationDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <PageTransition className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
       
-      {/* Hero Image with Parallax */}
-      <div className="relative w-full h-[50vh] overflow-hidden">
-        <motion.img
-          src={allImages[0]}
-          alt={location.name}
-          style={{ y }}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0 w-full h-[120%] object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+      <ParallaxBanner image={location.image} alt={location.name} eyebrow={location.location} title={location.name} height="h-[62vh] min-h-[420px]" />
       
       <main>
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-16 max-w-full overflow-hidden">
@@ -99,7 +87,7 @@ const LocationDetail = () => {
             className="mb-8 text-[11px] uppercase tracking-wider font-normal"
           >
             <ArrowLeft className="mr-2 h-3 w-3" />
-            Back to models
+            Back to plans
           </Button>
 
           {/* Title, Description, Rating */}
@@ -117,9 +105,6 @@ const LocationDetail = () => {
                 <span className="font-light text-foreground">{location.rating}</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-light mb-4 tracking-tight">
-              {location.name}
-            </h1>
             <p className="text-sm text-muted-foreground leading-relaxed font-light max-w-2xl">
               {location.description}
             </p>
@@ -187,7 +172,7 @@ const LocationDetail = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Amenities</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">What is in it</h2>
                   <div className="grid md:grid-cols-2 gap-6">
                     {location.amenities.map((amenity: any, index: number) => {
                       const Icon = amenity.icon;
@@ -215,7 +200,7 @@ const LocationDetail = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">What's Included</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Included</h2>
                   <ul className="grid md:grid-cols-2 gap-3">
                     {location.details.map((detail: string, index: number) => (
                       <li key={index} className="flex items-start gap-3 text-sm text-muted-foreground font-light">
@@ -234,7 +219,7 @@ const LocationDetail = () => {
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Early Notes</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">From the bench</h2>
                   <Carousel
                     opts={{
                       align: "start",
@@ -301,23 +286,23 @@ const LocationDetail = () => {
                   <div className="space-y-6">
                     <div>
                       <Label htmlFor="detail-guests" className="text-[11px] uppercase tracking-wider font-normal mb-3 block">
-                        Seats
+                        Live projects
                       </Label>
                       <Select value={guests} onValueChange={setGuests}>
                         <SelectTrigger id="detail-guests" className="rounded-md text-sm font-light">
-                          <SelectValue placeholder="Select seats" />
+                          <SelectValue placeholder="Live projects" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="1">1 Seat — Solo</SelectItem>
-                          <SelectItem value="5">5 Seats — Desk</SelectItem>
-                          <SelectItem value="20">20 Seats — Studio</SelectItem>
+                          <SelectItem value="1">1 — Solo</SelectItem>
+                          <SelectItem value="3">3 — Lab</SelectItem>
+                          <SelectItem value="10">10 — Company</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div>
                       <Label className="text-[11px] uppercase tracking-wider font-normal mb-3 block">
-                        Start & Review
+                        Setup meeting
                       </Label>
                       <CalendarComponent
                         mode="range"
@@ -345,7 +330,7 @@ const LocationDetail = () => {
                       onClick={handleBooking}
                     >
                       <Calendar className="mr-2 h-4 w-4" />
-                      Get Started
+                      Subscribe
                     </Button>
                   </div>
                 </Card>
@@ -356,7 +341,7 @@ const LocationDetail = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageTransition>
   );
 };
 

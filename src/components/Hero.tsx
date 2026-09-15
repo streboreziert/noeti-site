@@ -1,122 +1,125 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Cpu } from "lucide-react";
-import heroImage from "@/assets/hero-camping.jpg";
-import forestImage from "@/assets/spot-forest.jpg";
-import lakeImage from "@/assets/spot-lake.jpg";
-import meadowImage from "@/assets/spot-meadow.jpg";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, ArrowDown } from "lucide-react";
+import { Link } from "react-router-dom";
+import heroImage from "@/assets/hero.jpg";
+import LiveScope from "./scope/LiveScope";
+import { Magnetic } from "./motion/Magnetic";
+import { EASE } from "@/lib/motion";
 
-const slides = [
-  { image: heroImage, alt: "Noeti — compute on hardware you choose" },
-  { image: forestImage, alt: "Solo — your machine first" },
-  { image: lakeImage, alt: "Desk — a shared Where map" },
-  { image: meadowImage, alt: "Studio — private-first routing" },
-];
-
-const SLIDE_DURATION = 5000;
+const lines = ["The circuit exists.", "Inference starts."];
 
 const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 900], [0, 180]);
+  const copyOpacity = useTransform(scrollY, [0, 500], [1, 0]);
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setProgress(0);
-  }, []);
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setProgress(0);
-  };
-
-  useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          nextSlide();
-          return 0;
-        }
-        return prev + 100 / (SLIDE_DURATION / 50);
-      });
-    }, 50);
-
-    return () => clearInterval(progressInterval);
-  }, [nextSlide]);
+  const scrollToBooking = () => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      {/* Image Ticker */}
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <img
-            src={slides[currentSlide].image}
-            alt={slides[currentSlide].alt}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/30" />
-        </motion.div>
-      </AnimatePresence>
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink grain text-white flex items-center">
+      {/* Board render behind everything */}
+      <motion.img
+        src={heroImage}
+        alt=""
+        aria-hidden
+        style={{ y: bgY }}
+        initial={{ opacity: 0, scale: 1.08 }}
+        animate={{ opacity: 0.5, scale: 1 }}
+        transition={{ duration: 2, ease: EASE }}
+        className="absolute inset-0 w-full h-[120%] object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/40" />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" />
+      <div className="absolute -left-40 top-1/3 h-[480px] w-[480px] rounded-full bg-primary/10 blur-[160px]" />
 
-      {/* Bottom-Left Text Content */}
-      <div className="absolute bottom-20 left-6 md:left-12 lg:left-16 z-10 text-white">
-        {/* Tree Icon */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="mb-4"
-        >
-          <Cpu className="w-6 h-6 text-white stroke-[1.5]" />
-        </motion.div>
+      <div className="container mx-auto px-6 lg:px-12 relative pt-28 pb-20 lg:pt-32 lg:pb-24">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Copy */}
+          <motion.div style={{ opacity: copyOpacity }} className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="flex items-center gap-3 mb-7 font-mono text-[11px] uppercase tracking-[0.22em] text-white/60"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full animate-ping" style={{ backgroundColor: "hsl(var(--trace))", opacity: 0.7 }} />
+                <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "hsl(var(--trace))" }} />
+              </span>
+              Physical AI · trained on circuits · Latvia
+            </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight max-w-md text-left flex flex-col"
-        >
-          <span>AI where</span>
-          <span>you want it</span>
-        </motion.h1>
+            <h1 className="text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem] font-light tracking-tighter">
+              {lines.map((line, i) => (
+                <span key={line} className="block overflow-hidden pb-[0.06em]">
+                  <motion.span
+                    className={`block ${i === 1 ? "text-gradient" : ""}`}
+                    initial={{ y: "110%" }}
+                    animate={{ y: 0 }}
+                    transition={{ delay: 0.35 + i * 0.12, duration: 0.9, ease: EASE }}
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
 
-        {/* CTA Button */}
-        <motion.button
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
-          className="mt-6 flex items-center gap-3 bg-white text-foreground px-6 py-3 rounded-full text-sm tracking-wide hover:bg-white/90 transition-colors"
-        >
-          Get Started
-          <ArrowRight className="w-4 h-4" />
-        </motion.button>
-      </div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75, duration: 0.6 }}
+              className="mt-7 text-base md:text-lg font-light text-white/70 leading-relaxed max-w-md"
+            >
+              Physical AI we designed and trained for circuits — not for language. After fabrication: measure a signal, compare it to
+              simulation, name the likely fault, and probe again until it works.
+            </motion.p>
 
-      {/* Progress Bars */}
-      <div className="absolute bottom-8 left-6 md:left-12 lg:left-16 right-6 md:right-12 lg:right-16 z-10 flex gap-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className="flex-1 h-[2px] bg-white/30 overflow-hidden cursor-pointer"
-            aria-label={`Go to slide ${index + 1}`}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.95, duration: 0.6 }}
+              className="mt-9 flex flex-wrap items-center gap-4"
+            >
+              <Magnetic>
+                <button
+                  onClick={scrollToBooking}
+                  className="shine group flex items-center gap-3 bg-primary text-primary-foreground px-7 py-3.5 rounded-full text-sm tracking-wide hover:brightness-110 transition"
+                >
+                  Subscribe
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </Magnetic>
+              <Magnetic strength={0.2}>
+                <Link to="/models" className="glass flex items-center gap-2 px-6 py-3.5 rounded-full text-sm tracking-wide hover:bg-white/15 transition-colors">
+                  Solo · Lab · Company
+                </Link>
+              </Magnetic>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4 }}
+              className="mt-12 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40"
+            >
+              <motion.span animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}>
+                <ArrowDown className="h-3.5 w-3.5" />
+              </motion.span>
+              Live at three companies
+            </motion.div>
+          </motion.div>
+
+          {/* Instrument */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, rotateX: 8 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ delay: 0.6, duration: 1, ease: EASE }}
+            style={{ perspective: 1200 }}
+            className="lg:col-span-7"
           >
-            <div
-              className="h-full bg-white transition-all duration-100 ease-linear"
-              style={{
-                width: index === currentSlide ? `${progress}%` : index < currentSlide ? "100%" : "0%",
-              }}
-            />
-          </button>
-        ))}
+            <LiveScope />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
