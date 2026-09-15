@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Cpu, Activity, GitCompare, Wrench, Lock, MapPin } from "lucide-react";
 import { Reveal } from "./motion/Reveal";
 import { TextReveal } from "./motion/TextReveal";
@@ -43,8 +44,11 @@ const linkPath = (i: number) => {
 };
 
 /** Honeyb-style hub: the model hovers in the middle, the six facts feed into it. */
-const Architecture = () => (
-  <section id="architecture" className="relative py-28 lg:py-36 bg-ink text-white overflow-hidden border-t border-white/10">
+const Architecture = () => {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef, { amount: 0.15 });
+  return (
+  <section id="architecture" className="relative py-28 lg:py-36 bg-ink/85 text-white overflow-hidden border-t border-white/10">
     <div className="container mx-auto px-6 lg:px-12 relative">
       <div className="grid lg:grid-cols-12 gap-10 mb-14 lg:mb-10 items-end">
         <div className="lg:col-span-7">
@@ -62,7 +66,7 @@ const Architecture = () => (
       </div>
 
       {/* Desktop stage */}
-      <div className="hidden lg:block relative mx-auto max-w-[1000px]" style={{ aspectRatio: `${W} / ${H}` }}>
+      <div ref={stageRef} className="hidden lg:block relative mx-auto max-w-[1000px]" style={{ aspectRatio: `${W} / ${H}` }}>
         <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 w-full h-full" aria-hidden>
           {items.map((_, i) => (
             <g key={i}>
@@ -77,13 +81,17 @@ const Architecture = () => (
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 1.1, delay: 0.3 + i * 0.1, ease: EASE }}
               />
-              {/* a packet of measured state flowing into the model */}
-              <circle r="3.5" fill="hsl(150 85% 62%)">
-                <animateMotion dur={`${3.2 + (i % 3) * 0.6}s`} begin={`${i * 0.55}s`} repeatCount="indefinite" path={linkPath(i)} />
-              </circle>
-              <circle r="8" fill="hsl(150 85% 62%)" opacity="0.18">
-                <animateMotion dur={`${3.2 + (i % 3) * 0.6}s`} begin={`${i * 0.55}s`} repeatCount="indefinite" path={linkPath(i)} />
-              </circle>
+              {/* a packet of measured state flowing into the model — only animated while on screen */}
+              {inView && (
+                <>
+                  <circle r="3.5" fill="hsl(150 85% 62%)">
+                    <animateMotion dur={`${3.2 + (i % 3) * 0.6}s`} begin={`${i * 0.55}s`} repeatCount="indefinite" path={linkPath(i)} />
+                  </circle>
+                  <circle r="8" fill="hsl(150 85% 62%)" opacity="0.18">
+                    <animateMotion dur={`${3.2 + (i % 3) * 0.6}s`} begin={`${i * 0.55}s`} repeatCount="indefinite" path={linkPath(i)} />
+                  </circle>
+                </>
+              )}
             </g>
           ))}
         </svg>
@@ -142,6 +150,7 @@ const Architecture = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default Architecture;

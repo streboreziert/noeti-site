@@ -145,7 +145,6 @@ const LiveScope = ({ className = "", compact = false }: LiveScopeProps) => {
             return (
               <motion.span
                 key={c}
-                layout
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: phase === "measure" ? 0.25 : 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}

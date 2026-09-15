@@ -12,6 +12,8 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import { ScrollProgress } from "./components/motion/ScrollProgress";
+import TraceRail from "./components/TraceRail";
+import ScrollBoard from "./components/ScrollBoard";
 
 const queryClient = new QueryClient();
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -43,8 +45,12 @@ const App = () => (
       <Sonner />
       <Router basename={Router === BrowserRouter ? basename : undefined}>
         <ScrollToTop />
+        <ScrollBoard />
         <ScrollProgress />
-        <AnimatedRoutes />
+        <TraceRail />
+        <div className="relative z-10">
+          <AnimatedRoutes />
+        </div>
       </Router>
     </TooltipProvider>
   </QueryClientProvider>

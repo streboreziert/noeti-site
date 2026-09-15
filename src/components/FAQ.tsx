@@ -17,20 +17,16 @@ const faqs = [
   },
   {
     q: "What is “usage” on the plans?",
-    a: "A meter for measure–compare–prove loops. Solo 2M, Lab 10M, Company 40M a month. Same model on every plan."
+    a: "A meter for measure–compare–prove loops. Pro 2M, Pro+ 10M, Max 40M a month; Enterprise is sized per site. Same model on every plan."
   },
   {
     q: "Where do my captures and netlists go?",
     a: "To our inference box in Riga, to answer your query. They do not train anything public. Your board stays yours."
   },
-  {
-    q: "Does it replace SPICE or Flux?",
-    a: "No. SPICE predicts the trace before the board exists. Flux and Quilter place and route. Noeti starts when the board comes back and the trace is wrong."
-  },
 ];
 
 const FAQ = () => (
-  <section className="py-28 lg:py-36 bg-background border-t border-border">
+  <section className="py-28 lg:py-36 bg-background/70 border-t border-border">
     <div className="container mx-auto px-6 lg:px-12">
       <div className="grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-4">

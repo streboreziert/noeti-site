@@ -62,7 +62,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
       transition={{
         duration: 0.6,
       }}
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-400 ${isMobileMenuOpen ? "bg-foreground" : isDark ? (isScrolled ? "bg-foreground/95 backdrop-blur-lg shadow-soft" : "bg-foreground") : isScrolled ? "bg-card/95 backdrop-blur-lg shadow-soft" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-400 ${isMobileMenuOpen ? "bg-foreground" : isDark ? (isScrolled ? "bg-ink shadow-soft" : "bg-foreground") : isScrolled ? "bg-ink/95 border-b border-white/10" : "bg-transparent"}`}
     >
       <div className="container mx-auto px-6 lg:px-12 py-5">
         <div className="flex items-center justify-between">
@@ -103,7 +103,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
             <Button
               variant="outline"
               size="sm"
-              className={`rounded-full smooth-hover text-[11px] uppercase tracking-wider font-normal backdrop-blur-md border border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
+              className={`rounded-full smooth-hover text-[11px] uppercase tracking-wider font-normal border border-white/30 px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
               onClick={handleBookNow}
             >
               Subscribe
@@ -162,7 +162,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
               )}
               <Button
                 variant="outline"
-                className={`w-full mt-4 rounded-full text-[11px] uppercase tracking-wider font-normal backdrop-blur-md border border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
+                className={`w-full mt-4 rounded-full text-[11px] uppercase tracking-wider font-normal border border-white/30 px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   handleBookNow();

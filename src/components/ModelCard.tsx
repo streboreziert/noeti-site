@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
-import type { Model } from "@/data/models";
+import { priceLabel, type Model } from "@/data/models";
 import { TiltCard } from "./motion/TiltCard";
 
 interface ModelCardProps {
@@ -14,7 +14,7 @@ const ModelCard = ({ model, highlight = false, tilt = true }: ModelCardProps) =>
   const inner = (
     <Link
       to={`/model/${model.id}`}
-      className={`group relative block overflow-hidden rounded-lg border bg-card shadow-soft transition-shadow duration-500 hover:shadow-hover ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg border bg-card shadow-soft transition-shadow duration-500 hover:shadow-hover ${
         highlight ? "border-primary/40" : "border-border"
       }`}
     >
@@ -34,8 +34,9 @@ const ModelCard = ({ model, highlight = false, tilt = true }: ModelCardProps) =>
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-6 flex flex-1 flex-col">
         <p className="text-sm text-muted-foreground font-light leading-relaxed mb-5 min-h-[40px]">{model.tagline}</p>
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground mb-4">{model.billing}</div>
         <ul className="space-y-2 mb-6">
           {model.features.map((f) => (
             <li key={f} className="flex items-center gap-2.5 text-sm">
@@ -46,13 +47,13 @@ const ModelCard = ({ model, highlight = false, tilt = true }: ModelCardProps) =>
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-between border-t border-border pt-5">
+        <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
           <div>
-            <span className="text-3xl font-light tracking-tighter text-foreground">€{model.price}</span>
-            <span className="text-muted-foreground text-xs font-light ml-1">/ month</span>
+            <span className="text-3xl font-light tracking-tighter text-foreground">{priceLabel(model)}</span>
+            {model.price !== null && <span className="text-muted-foreground text-xs font-light ml-1">/ month</span>}
           </div>
           <span className="inline-flex items-center gap-1.5 text-xs text-primary group-hover:gap-3 transition-all">
-            Details
+            {model.price === null ? "Talk to us" : "Details"}
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </div>

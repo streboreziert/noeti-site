@@ -9,7 +9,7 @@ const stats = [
 ];
 
 const Stats = () => (
-  <section className="relative border-y border-border bg-background">
+  <section className="relative border-y border-border bg-background/60">
     <div className="container mx-auto px-6 lg:px-12">
       <Stagger className="grid grid-cols-2 lg:grid-cols-4 lg:divide-x divide-border" gap={0.1}>
         {stats.map((s) => (

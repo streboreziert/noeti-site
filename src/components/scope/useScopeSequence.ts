@@ -103,7 +103,7 @@ export const useScopeSequence = (autoplay = true, startIndex = 0) => {
         // settle onto this candidate in the first 40% of its window, then hold
         const b = Math.min(1, local / 0.4);
         s.blend = 1 - Math.pow(1 - b, 3);
-        if (now - lastTick > 100 && s.simTo) {
+        if (now - lastTick > 160 && s.simTo) {
           lastTick = now;
           const from = s.simFrom ?? sc.expected;
           const to = s.simTo;

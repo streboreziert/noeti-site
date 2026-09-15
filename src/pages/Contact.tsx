@@ -51,7 +51,7 @@ const Contact = () => {
   };
 
   return (
-    <PageTransition className="min-h-screen bg-background overflow-x-hidden">
+    <PageTransition className="min-h-screen overflow-x-hidden">
       <Navigation />
 
       <ParallaxBanner image={bannerImage} alt="Contact Noeti" eyebrow="Contact" title="Talk to the person who trained it." />

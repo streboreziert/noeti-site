@@ -73,20 +73,32 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    background-color: hsl(var(--background));
   }
 
   ::selection {
     background: hsl(var(--primary) / 0.25);
   }
 
+  /* Reduce motion: keep every pose, stop the loops. */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
+    html {
+      scroll-behavior: auto;
+    }
+    .animate-bob,
+    .animate-bob-shadow,
+    .animate-turn,
+    .animate-float,
+    .animate-pulse-ring,
+    .animate-dash,
+    .animate-flow,
+    .animate-ping,
+    .animate-marquee,
+    .animate-marquee-reverse {
+      animation: none !important;
+    }
+    .animate-turn {
+      transform: rotateZ(-32deg);
     }
   }
 }
@@ -180,6 +192,9 @@
   .animate-bob-shadow {
     animation: bob-shadow 4.2s ease-in-out infinite;
   }
+  .animate-turn {
+    animation: turn 22s linear infinite;
+  }
   .animate-flow {
     stroke-dasharray: 4 8;
     animation: dash 1.6s linear infinite;
@@ -217,10 +232,19 @@
 @keyframes bob {
   0%,
   100% {
-    transform: translateY(-8px) rotateX(58deg) rotateZ(-38deg);
+    transform: translateY(-9px);
   }
   50% {
-    transform: translateY(8px) rotateX(58deg) rotateZ(-30deg);
+    transform: translateY(9px);
+  }
+}
+
+@keyframes turn {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
   }
 }
 

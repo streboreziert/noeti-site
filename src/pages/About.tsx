@@ -20,7 +20,7 @@ const values = [
 ];
 
 const About = () => (
-  <PageTransition className="min-h-screen bg-background overflow-x-hidden">
+  <PageTransition className="min-h-screen overflow-x-hidden">
     <Navigation />
     <ParallaxBanner image={bannerImage} alt="Noeti — physical AI for circuits" eyebrow="About" title="Physical inference for circuits that already exist." />
 

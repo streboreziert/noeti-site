@@ -9,19 +9,26 @@ import Navigation from "@/components/Navigation";
 import { ParallaxBanner } from "@/components/motion/ParallaxBanner";
 import { PageTransition } from "@/components/motion/PageTransition";
 import Footer from "@/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from "sonner";
-import { getModelById, legacyIds } from "@/data/models";
+import { getModelById, legacyIds, priceLabel } from "@/data/models";
 import { mailTo } from "@/lib/contact";
 
 const LocationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = id ? getModelById(legacyIds[id] ?? id) : null;
+  const canonicalId = id ? (legacyIds[id] ?? id) : undefined;
+  const location = canonicalId ? getModelById(canonicalId) : null;
+
+  useEffect(() => {
+    if (id && legacyIds[id]) {
+      navigate(`/model/${legacyIds[id]}`, { replace: true });
+    }
+  }, [id, navigate]);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: undefined
@@ -53,7 +60,7 @@ const LocationDetail = () => {
     }
     mailTo(
       `Noeti ${location.name} request`,
-      `Plan: ${location.name} (€${location.price}/mo)\nLive projects: ${guests}\nMeeting window: ${formatDateRange()}`,
+      `Plan: ${location.name} (${priceLabel(location)})\nLive projects: ${guests}\nMeeting window: ${formatDateRange()}`,
     );
     toast.success(`Request for ${location.name} submitted!`);
   };
@@ -73,7 +80,7 @@ const LocationDetail = () => {
   };
 
   return (
-    <PageTransition className="min-h-screen bg-background overflow-x-hidden">
+    <PageTransition className="min-h-screen overflow-x-hidden">
       <Navigation />
       
       <ParallaxBanner image={location.image} alt={location.name} eyebrow={location.location} title={location.name} height="h-[62vh] min-h-[420px]" />
@@ -256,8 +263,8 @@ const LocationDetail = () => {
                 <Card className="p-8 border border-border shadow-soft">
                   <div className="mb-8">
                     <div className="flex items-baseline gap-2 mb-2">
-                      <span className="text-2xl font-light">€{location.price}</span>
-                      <span className="text-xs text-muted-foreground font-light">/ mo</span>
+                      <span className="text-2xl font-light">{priceLabel(location)}</span>
+                      {location.price !== null && <span className="text-xs text-muted-foreground font-light">/ mo</span>}
                     </div>
                   </div>
 
@@ -271,9 +278,10 @@ const LocationDetail = () => {
                           <SelectValue placeholder="Live projects" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="1">1 — Solo</SelectItem>
-                          <SelectItem value="3">3 — Lab</SelectItem>
-                          <SelectItem value="10">10 — Company</SelectItem>
+                          <SelectItem value="1">1 — Pro</SelectItem>
+                          <SelectItem value="3">3 — Pro+</SelectItem>
+                          <SelectItem value="10">10 — Max</SelectItem>
+                          <SelectItem value="unlimited">Unlimited — Enterprise</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

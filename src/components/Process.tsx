@@ -59,7 +59,7 @@ const Process = () => {
   }, [sc]);
 
   return (
-    <section id="process" className="relative py-28 lg:py-40 bg-background overflow-hidden">
+    <section id="process" className="relative py-28 lg:py-40 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="max-w-2xl mb-16 lg:mb-24">
           <Reveal>

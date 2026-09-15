@@ -45,6 +45,21 @@ const ScopeCanvas = ({ stateRef, className }: Props) => {
       h = 0;
     let visible = true;
     const noise = new Float32Array(1024).map(() => (Math.random() - 0.5) * 2);
+    const cursor = { t: -1, active: false };
+    const onMove = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      cursor.t = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      cursor.active = true;
+    };
+    const onLeave = () => {
+      cursor.active = false;
+    };
+    const voltsPerDiv = (label: string) => {
+      const m = label.match(/([\d.]+)\s*(m?)V/);
+      if (!m) return 1;
+      return parseFloat(m[1]) * (m[2] === "m" ? 0.001 : 1);
+    };
+    const fmtV = (v: number) => (Math.abs(v) < 1 ? `${(v * 1000).toFixed(0)} mV` : `${v.toFixed(2)} V`);
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -167,6 +182,50 @@ const ScopeCanvas = ({ stateRef, className }: Props) => {
         ctx.fill();
       }
 
+      // cursor measurement (hover)
+      if (cursor.active) {
+        const t = cursor.t;
+        const x = t * w;
+        const vpd = voltsPerDiv(scenario.volts);
+        const ym = scenario.measured(t);
+        const ye = scenario.expected(t);
+        ctx.setLineDash([3, 5]);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(255,255,255,0.45)";
+        ctx.beginPath();
+        ctx.moveTo(Math.round(x) + 0.5, 0);
+        ctx.lineTo(Math.round(x) + 0.5, h);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // dots on both traces
+        ctx.fillStyle = COL.measured;
+        ctx.beginPath();
+        ctx.arc(x, yOf(ym), 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        if (searching) {
+          ctx.fillStyle = COL.expected;
+          ctx.beginPath();
+          ctx.arc(x, yOf(ye), 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // readout box
+        const lines = [`t  ${(t * 10).toFixed(2)} div`, `y  ${fmtV(ym * 4 * vpd)}`];
+        if (searching) lines.push(`Δ  ${fmtV((ym - ye) * 4 * vpd)}`);
+        ctx.font = "11px 'IBM Plex Mono', ui-monospace, monospace";
+        const bw = 118;
+        const bh = 14 * lines.length + 12;
+        const bx = x + 12 + bw > w ? x - 12 - bw : x + 12;
+        const by = Math.min(h - bh - 8, Math.max(8, yOf(ym) - bh / 2));
+        ctx.fillStyle = "rgba(10,11,9,0.92)";
+        ctx.fillRect(bx, by, bw, bh);
+        ctx.strokeStyle = "rgba(255,255,255,0.18)";
+        ctx.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
+        lines.forEach((ln, i) => {
+          ctx.fillStyle = i === 0 ? "rgba(255,255,255,0.6)" : i === 1 ? COL.measured : "rgb(255,150,120)";
+          ctx.fillText(ln, bx + 8, by + 17 + i * 14);
+        });
+      }
+
       // slow scanline
       const sy = ((now / 4000) % 1) * h;
       ctx.fillStyle = "rgba(255,255,255,0.02)";
@@ -197,6 +256,8 @@ const ScopeCanvas = ({ stateRef, className }: Props) => {
     resize();
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVis);
+    canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerleave", onLeave);
     io.observe(canvas);
     start();
     return () => {
@@ -204,10 +265,12 @@ const ScopeCanvas = ({ stateRef, className }: Props) => {
       io.disconnect();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVis);
+      canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerleave", onLeave);
     };
   }, [stateRef]);
 
-  return <canvas ref={ref} className={className} aria-hidden />;
+  return <canvas ref={ref} className={`${className ?? ""} cursor-crosshair`} aria-hidden />;
 };
 
 export default ScopeCanvas;

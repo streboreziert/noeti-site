@@ -1,7 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, ArrowDown } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero.jpg";
 import LiveScope from "./scope/LiveScope";
 import { Magnetic } from "./motion/Magnetic";
 import { EASE } from "@/lib/motion";
@@ -9,32 +8,17 @@ import { EASE } from "@/lib/motion";
 const lines = ["The circuit exists.", "Inference starts."];
 
 const Hero = () => {
-  const { scrollY } = useScroll();
-  const bgY = useTransform(scrollY, [0, 900], [0, 180]);
-  const copyOpacity = useTransform(scrollY, [0, 500], [1, 0]);
 
   const scrollToBooking = () => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink text-white flex items-center">
-      {/* Board render behind everything */}
-      <motion.img
-        src={heroImage}
-        alt=""
-        aria-hidden
-        style={{ y: bgY }}
-        initial={{ opacity: 0, scale: 1.08 }}
-        animate={{ opacity: 0.5, scale: 1 }}
-        transition={{ duration: 2, ease: EASE }}
-        className="absolute inset-0 w-full h-[120%] object-cover will-change-transform"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/40" />
-      <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" />
+    <section className="relative min-h-[100svh] w-full overflow-hidden text-white flex items-center">
+      <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-12 relative pt-28 pb-20 lg:pt-32 lg:pb-24">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Copy */}
-          <motion.div style={{ opacity: copyOpacity }} className="lg:col-span-5">
+          <div className="lg:col-span-5">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -90,7 +74,7 @@ const Hero = () => {
               </Magnetic>
               <Magnetic strength={0.2}>
                 <Link to="/models" className="glass flex items-center gap-2 px-6 py-3.5 rounded-full text-sm tracking-wide hover:bg-white/15 transition-colors">
-                  Solo · Lab · Company
+                  Pro · Pro+ · Max · Enterprise
                 </Link>
               </Magnetic>
             </motion.div>
@@ -106,7 +90,7 @@ const Hero = () => {
               </motion.span>
               Live at three companies
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Instrument */}
           <motion.div

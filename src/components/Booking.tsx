@@ -116,7 +116,7 @@ const Booking = () => {
   };
 
   return (
-    <section id="booking" className="py-32 lg:py-40 bg-accent/20" ref={ref}>
+    <section id="booking" className="py-32 lg:py-40 bg-background/70 border-t border-border" ref={ref}>
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -174,7 +174,7 @@ const Booking = () => {
                           <SelectContent>
                             {models.map((loc) => (
                               <SelectItem key={loc.id} value={loc.id}>
-                                {loc.name} — €{loc.price}/mo
+                                {loc.name} — {loc.price === null ? "custom" : `€${loc.price}/mo`}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -191,9 +191,10 @@ const Booking = () => {
                             <SelectValue placeholder="Live projects" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">1 — Solo, 1 live project</SelectItem>
-                            <SelectItem value="3">3 — Lab, 3 live projects</SelectItem>
-                            <SelectItem value="10">10 — Company, 10 live projects</SelectItem>
+                            <SelectItem value="1">1 — Pro</SelectItem>
+                            <SelectItem value="3">3 — Pro+</SelectItem>
+                            <SelectItem value="10">10 — Max</SelectItem>
+                            <SelectItem value="unlimited">Unlimited — Enterprise</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
