@@ -7,7 +7,7 @@ import { TextReveal } from "./motion/TextReveal";
 import { Reveal } from "./motion/Reveal";
 
 const CTABand = () => (
-  <section className="relative overflow-hidden bg-ink text-white grain">
+  <section className="relative overflow-hidden bg-ink text-white">
     <motion.img
       src={wave}
       alt=""
@@ -22,13 +22,12 @@ const CTABand = () => (
     <div className="container mx-auto px-6 lg:px-12 py-28 lg:py-36 relative">
       <div className="max-w-2xl">
         <Reveal>
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary mb-5 block">Riga · pre-seed · live at three companies</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary mb-5 block">Live at three companies</span>
         </Reveal>
-        <TextReveal as="h2" text="The part came back from the factory and the waveform is still wrong." className="text-4xl md:text-6xl font-light tracking-tight mb-8" />
+        <TextReveal as="h2" text="The part came back from the factory and the waveform is still wrong." className="font-serif text-4xl md:text-6xl font-normal tracking-[-0.02em] mb-8" />
         <Reveal delay={0.25}>
           <p className="text-white/65 font-light leading-relaxed mb-10 max-w-lg">
-            Send the trace. The model works backwards from the signal to the board — a net, a part, a kind of fault — and sends you to the
-            next probe.
+            Send the trace. The model works backwards from the signal to the board: a net, a part, a kind of fault. Then the next probe.
           </p>
           <div className="flex flex-wrap gap-4">
             <Magnetic>

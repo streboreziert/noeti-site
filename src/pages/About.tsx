@@ -31,7 +31,7 @@ const About = () => (
             <Reveal>
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary">The inverse question</span>
             </Reveal>
-            <TextReveal as="h2" text="SPICE asks: given this circuit, what voltage. We ask: given this voltage, what on the board." className="text-2xl md:text-3xl font-light tracking-tight mt-3 mb-8" />
+            <TextReveal as="h2" text="SPICE asks: given this circuit, what voltage. We ask: given this voltage, what on the board." className="font-serif text-2xl md:text-3xl font-normal tracking-[-0.02em] mt-3 mb-8" />
             <Reveal delay={0.2}>
               <div className="space-y-6 text-muted-foreground font-light leading-relaxed">
                 <p>
@@ -81,7 +81,7 @@ const About = () => (
             <Reveal>
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">What we have trained so far</span>
             </Reveal>
-            <TextReveal as="h2" text="From simulation to the bench." className="text-3xl md:text-4xl font-light tracking-tight mt-3" />
+            <TextReveal as="h2" text="From simulation to the bench." className="font-serif text-3xl md:text-4xl font-normal tracking-[-0.02em] mt-3" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((value, index) => (
@@ -91,7 +91,7 @@ const About = () => (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.08 }}
-                className="p-8 border border-border rounded-2xl bg-card hover:border-primary/40 transition-colors duration-300"
+                className="p-8 border border-border rounded-lg bg-card hover:border-primary/40 transition-colors duration-300"
               >
                 <value.icon className="h-5 w-5 text-primary mb-5" />
                 <h3 className="text-lg tracking-tight mb-3">{value.title}</h3>

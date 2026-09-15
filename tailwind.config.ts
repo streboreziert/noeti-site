@@ -67,6 +67,7 @@ export default {
       fontFamily: {
         sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        serif: ['"Source Serif 4"', 'Georgia', '"Times New Roman"', 'serif'],
       },
       letterSpacing: {
         tightest: '-0.03em',

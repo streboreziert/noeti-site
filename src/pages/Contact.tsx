@@ -67,7 +67,7 @@ const Contact = () => {
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">
               Contact
             </span>
-            <h1 className="text-2xl md:text-3xl font-light tracking-tight text-foreground mb-4">
+            <h1 className="font-serif text-2xl md:text-3xl font-normal tracking-[-0.02em] text-foreground mb-4">
               Get in Touch
             </h1>
             <p className="text-sm text-muted-foreground font-light">

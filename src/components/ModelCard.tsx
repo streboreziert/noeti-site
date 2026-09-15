@@ -14,7 +14,7 @@ const ModelCard = ({ model, highlight = false, tilt = true }: ModelCardProps) =>
   const inner = (
     <Link
       to={`/model/${model.id}`}
-      className={`group relative block overflow-hidden rounded-2xl border bg-card shadow-soft transition-shadow duration-500 hover:shadow-hover ${
+      className={`group relative block overflow-hidden rounded-lg border bg-card shadow-soft transition-shadow duration-500 hover:shadow-hover ${
         highlight ? "border-primary/40" : "border-border"
       }`}
     >
@@ -29,11 +29,8 @@ const ModelCard = ({ model, highlight = false, tilt = true }: ModelCardProps) =>
         <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between text-white">
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60 mb-1">{model.location}</div>
-            <div className="text-2xl font-light tracking-tight">{model.name}</div>
+            <div className="font-serif text-2xl tracking-tight">{model.name}</div>
           </div>
-          {highlight && (
-            <span className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary text-primary-foreground">Most used</span>
-          )}
         </div>
       </div>
 

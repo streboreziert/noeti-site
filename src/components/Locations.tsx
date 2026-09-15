@@ -25,13 +25,12 @@ const Locations = () => {
 
   return (
     <section id="locations" className="relative py-28 lg:py-40 bg-background overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-dots opacity-60 [mask-image:radial-gradient(ellipse_at_center,#000,transparent_70%)]" />
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="text-center mb-16 lg:mb-20">
           <Reveal>
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary mb-4 block">Access</span>
           </Reveal>
-          <TextReveal as="h2" text="Three plans. One model." className="text-3xl md:text-5xl font-light tracking-tight mb-5" />
+          <TextReveal as="h2" text="Three plans. One model." className="font-serif text-3xl md:text-5xl font-normal tracking-[-0.02em] mb-5" />
           <Reveal delay={0.2}>
             <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto font-light">
               Same physical model on every plan. Usage at 1×, 5×, and 20×. Live projects at 1, 3, and 10.

@@ -8,4 +8,5 @@ mkdir docs
 cp -R dist/. docs/
 touch docs/.nojekyll
 echo "docs/ rebuilt. Commit and: git push origin main"
-echo "Live: https://streboreziert.github.io/noeti-site/"
+echo "Pages: https://streboreziert.github.io/noeti-site/"
+echo "Real live site is noeticompute.com — run ./push-noeticompute.sh for that."

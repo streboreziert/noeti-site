@@ -23,7 +23,7 @@ const LiveScope = ({ className = "", compact = false }: LiveScopeProps) => {
   const PhaseIcon = phaseMeta[phase].icon;
 
   return (
-    <div className={`relative rounded-2xl border border-white/10 bg-ink/80 backdrop-blur-md shadow-hover overflow-hidden ${className}`}>
+    <div className={`relative rounded-lg border border-white/10 bg-ink shadow-hover overflow-hidden ${className}`}>
       {/* Top bar */}
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-white/10 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-white/55">
         <div className="flex items-center gap-3 min-w-0">
@@ -100,7 +100,7 @@ const LiveScope = ({ className = "", compact = false }: LiveScopeProps) => {
               className="absolute right-3 top-3 text-right font-mono"
             >
               <div className="text-[10px] uppercase tracking-[0.2em] text-white/45">r = y<sub>scope</sub> − ŷ<sub>sim</sub></div>
-              <div className={`text-xl md:text-2xl tabular-nums ${residual < 0.1 ? "text-trace" : "text-white"}`}>{residual.toFixed(3)}</div>
+              <div className={`text-xl md:text-2xl tabular-nums ${residual < 0.05 ? "text-trace" : "text-white"}`}>{residual.toFixed(3)}<span className="text-xs text-white/40 ml-1">rms</span></div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -113,7 +113,7 @@ const LiveScope = ({ className = "", compact = false }: LiveScopeProps) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.5, ease: EASE }}
-              className="absolute left-3 right-3 bottom-3 md:left-auto md:max-w-[62%] rounded-xl border border-primary/40 bg-ink/90 backdrop-blur px-4 py-3"
+              className="absolute left-3 right-3 bottom-3 md:left-auto md:max-w-[62%] rounded-xl border border-primary/40 bg-ink/95 px-4 py-3"
             >
               <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-primary mb-1">
                 <Check className="h-3 w-3" /> likely cause
@@ -138,7 +138,7 @@ const LiveScope = ({ className = "", compact = false }: LiveScopeProps) => {
         </div>
 
         <div className="flex flex-wrap gap-1.5 md:justify-end">
-          {scenario.candidates.map((c, i) => {
+          {scenario.candidates.map(({ label: c }, i) => {
             const tried = phase === "named" || (phase === "search" && i < candidateIndex);
             const active = phase === "search" && i === candidateIndex;
             const answer = i === scenario.candidates.length - 1 && phase === "named";

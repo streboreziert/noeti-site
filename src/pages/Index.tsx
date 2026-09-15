@@ -5,7 +5,6 @@ import Locations from "@/components/Locations";
 import Process from "@/components/Process";
 import Architecture from "@/components/Architecture";
 import Compare from "@/components/Compare";
-import Marquee from "@/components/Marquee";
 import FAQ from "@/components/FAQ";
 import Booking from "@/components/Booking";
 import CTABand from "@/components/CTABand";
@@ -21,7 +20,6 @@ const Index = () => (
     <Process />
     <Architecture />
     <Compare />
-    <Marquee />
     <FAQ />
     <Booking />
     <CTABand />

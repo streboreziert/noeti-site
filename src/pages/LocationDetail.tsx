@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, MapPin, Star, Calendar, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ const LocationDetail = () => {
     }
     mailTo(
       `Noeti ${location.name} request`,
-      `Model: ${location.name} (€${location.price}/mo)\nSeats: ${guests}\nWindow: ${formatDateRange()}`,
+      `Plan: ${location.name} (€${location.price}/mo)\nLive projects: ${guests}\nMeeting window: ${formatDateRange()}`,
     );
     toast.success(`Request for ${location.name} submitted!`);
   };
@@ -100,10 +100,6 @@ const LocationDetail = () => {
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
               <MapPin className="h-3 w-3" />
               <span className="font-light">{location.location}</span>
-              <div className="flex items-center gap-1 ml-4">
-                <Star className="h-3 w-3 fill-primary text-primary" />
-                <span className="font-light text-foreground">{location.rating}</span>
-              </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed font-light max-w-2xl">
               {location.description}
@@ -219,7 +215,7 @@ const LocationDetail = () => {
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">From the bench</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Cases from the bench</h2>
                   <Carousel
                     opts={{
                       align: "start",
@@ -228,28 +224,14 @@ const LocationDetail = () => {
                     className="w-full"
                   >
                     <CarouselContent className="-ml-4">
-                      {location.reviews.map((review, index) => (
+                      {location.cases.map((c, index) => (
                         <CarouselItem key={index} className="pl-4 md:basis-1/2">
                           <div className="h-full p-6 bg-accent/30 rounded-lg">
-                            <Quote className="h-6 w-6 text-primary/30 mb-4" />
-                            <div className="flex items-center gap-1 mb-3">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`h-3 w-3 ${
-                                    i < review.rating
-                                      ? "fill-primary text-primary"
-                                      : "text-muted-foreground/30"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <p className="text-sm text-muted-foreground font-light mb-4 leading-relaxed">
-                              "{review.comment}"
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-normal text-foreground">{review.author}</span>
-                              <span className="text-xs text-muted-foreground font-light">{review.date}</span>
+                            <div className="font-mono text-[11px] tracking-[0.15em] text-primary mb-3">{c.net}</div>
+                            <p className="text-sm text-muted-foreground font-light mb-4 leading-relaxed">{c.symptom}</p>
+                            <div className="text-sm text-foreground border-t border-border pt-3">
+                              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground block mb-1">named</span>
+                              {c.cause}
                             </div>
                           </div>
                         </CarouselItem>
@@ -276,10 +258,6 @@ const LocationDetail = () => {
                     <div className="flex items-baseline gap-2 mb-2">
                       <span className="text-2xl font-light">€{location.price}</span>
                       <span className="text-xs text-muted-foreground font-light">/ mo</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs">
-                      <Star className="h-3 w-3 fill-primary text-primary" />
-                      <span className="font-light">{location.rating}</span>
                     </div>
                   </div>
 

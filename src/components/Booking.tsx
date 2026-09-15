@@ -125,7 +125,7 @@ const Booking = () => {
           className="text-center mb-16"
         >
           <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Setup</span>
-          <h2 className="text-2xl md:text-4xl font-light mb-4 text-foreground tracking-tight">Book a setup meeting</h2>
+          <h2 className="font-serif text-2xl md:text-4xl font-normal mb-4 text-foreground tracking-[-0.02em]">Book a setup meeting</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto font-light">
             Choose a plan and a 30-minute slot. We confirm by email and land on both calendars — yours and ours.
           </p>

@@ -16,7 +16,7 @@ const Hero = () => {
   const scrollToBooking = () => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink grain text-white flex items-center">
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink text-white flex items-center">
       {/* Board render behind everything */}
       <motion.img
         src={heroImage}
@@ -26,11 +26,10 @@ const Hero = () => {
         initial={{ opacity: 0, scale: 1.08 }}
         animate={{ opacity: 0.5, scale: 1 }}
         transition={{ duration: 2, ease: EASE }}
-        className="absolute inset-0 w-full h-[120%] object-cover"
+        className="absolute inset-0 w-full h-[120%] object-cover will-change-transform"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/40" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" />
-      <div className="absolute -left-40 top-1/3 h-[480px] w-[480px] rounded-full bg-primary/10 blur-[160px]" />
 
       <div className="container mx-auto px-6 lg:px-12 relative pt-28 pb-20 lg:pt-32 lg:pb-24">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -46,14 +45,14 @@ const Hero = () => {
                 <span className="absolute inline-flex h-full w-full rounded-full animate-ping" style={{ backgroundColor: "hsl(var(--trace))", opacity: 0.7 }} />
                 <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "hsl(var(--trace))" }} />
               </span>
-              Physical AI · trained on circuits · Latvia
+              Physical AI · trained on circuits · Riga
             </motion.div>
 
-            <h1 className="text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem] font-light tracking-tighter">
+            <h1 className="font-serif text-[2.7rem] leading-[1.04] sm:text-6xl lg:text-[4.6rem] font-normal tracking-[-0.02em]">
               {lines.map((line, i) => (
                 <span key={line} className="block overflow-hidden pb-[0.06em]">
                   <motion.span
-                    className={`block ${i === 1 ? "text-gradient" : ""}`}
+                    className={`block ${i === 1 ? "text-primary" : ""}`}
                     initial={{ y: "110%" }}
                     animate={{ y: 0 }}
                     transition={{ delay: 0.35 + i * 0.12, duration: 0.9, ease: EASE }}
@@ -111,10 +110,9 @@ const Hero = () => {
 
           {/* Instrument */}
           <motion.div
-            initial={{ opacity: 0, y: 40, rotateX: 8 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ delay: 0.6, duration: 1, ease: EASE }}
-            style={{ perspective: 1200 }}
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.9, ease: EASE }}
             className="lg:col-span-7"
           >
             <LiveScope />

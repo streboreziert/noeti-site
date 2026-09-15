@@ -9,11 +9,11 @@ import detailWave from "@/assets/detail-wave.jpg";
 import detailParticles from "@/assets/detail-particles.jpg";
 import detailRack from "@/assets/detail-rack.jpg";
 
-export interface Review {
-  author: string;
-  rating: number;
-  date: string;
-  comment: string;
+/** A job the model has run on a real board: what came back, what it named. */
+export interface Case {
+  net: string;
+  symptom: string;
+  cause: string;
 }
 
 export interface Model {
@@ -22,7 +22,6 @@ export interface Model {
   location: string;
   tagline: string;
   description: string;
-  rating: number;
   price: number;
   image: string;
   images: string[];
@@ -34,7 +33,7 @@ export interface Model {
     description: string;
   }[];
   details: string[];
-  reviews: Review[];
+  cases: Case[];
 }
 
 /** Three plans, one model. Usage at 1×, 5×, 20×. Live projects at 1, 3, 10. */
@@ -43,14 +42,13 @@ export const models: Model[] = [
     id: "solo",
     name: "Solo",
     location: "1× — your bench",
-    tagline: "One engineer, one scope, one board at a time.",
+    tagline: "One bench. One board at a time.",
     description:
-      "The same closed-weight physical model, sized for a single bench. Upload a capture or connect a scope, get a fault hypothesis back, probe again.",
-    rating: 4.9,
+      "The same model as Lab and Company, metered for one bench. Upload a capture or connect a scope, get a fault hypothesis back, probe again.",
     price: 20,
     image: modelSolo,
     images: [detailTraces, detailContours, detailParticles],
-    features: ["2M usage", "1 live project", "Scope, logger or capture"],
+    features: ["2M usage", "1 live project", "Scope, logger, or capture"],
     featured: true,
     amenities: [
       { icon: Gauge, label: "2M usage", description: "Meter for measure–compare–prove loops" },
@@ -66,21 +64,19 @@ export const models: Model[] = [
       "Fault hypothesis with evidence",
       "Same model as Lab and Company",
     ],
-    reviews: [
-      { author: "Marta K.", rating: 5, date: "August 2026", comment: "First board back from fab, clock edge was rounded. It pointed at the wrong-value cap on the first pass." },
-      { author: "Jonas P.", rating: 5, date: "July 2026", comment: "I photograph the scope screen, it reads the trace. That alone saves me an evening a week." },
-      { author: "Elena V.", rating: 4, date: "June 2026", comment: "Not magic — it names two or three candidates. But they are the right two or three." },
-      { author: "Rihards L.", rating: 5, date: "May 2026", comment: "Good size for a one-person shop. When the team grew we moved to Lab." },
+    cases: [
+      { net: "CLK_A → U3.7", symptom: "Clock edge rounded, never reaches 3.3 V", cause: "C7 fitted as 10 nF instead of 100 pF" },
+      { net: "AOUT ← U2.6", symptom: "Sine flat-topped on the negative half", cause: "VEE open at U2.4" },
+      { net: "3V3 rail", symptom: "100 Hz sawtooth, 280 mV", cause: "Bulk cap C1 cold joint" },
     ],
   },
   {
     id: "lab",
     name: "Lab",
     location: "5× Solo",
-    tagline: "A small lab with several boards in bring-up at once.",
+    tagline: "Several boards in bring-up at once.",
     description:
-      "Five times the usage, three live projects. For a lab where more than one board is on the bench and the residuals pile up faster than one engineer can chase them.",
-    rating: 5.0,
+      "Five times the usage, three live projects. For a lab with more than one board on the bench and one engineer chasing all of them.",
     price: 60,
     image: modelDesk,
     images: [detailHex, detailWave, detailTraces],
@@ -100,21 +96,19 @@ export const models: Model[] = [
       "Priority on the inference box",
       "Same model as Solo and Company",
     ],
-    reviews: [
-      { author: "Anna B.", rating: 5, date: "August 2026", comment: "Three boards in bring-up, one account. The residual view is where the morning standup happens now." },
-      { author: "Tomas D.", rating: 5, date: "July 2026", comment: "Old netlist, nobody remembers the design intent. It still found the open via." },
-      { author: "Inese R.", rating: 5, date: "June 2026", comment: "Simple enough that the intern used it on day two." },
-      { author: "Markus H.", rating: 5, date: "May 2026", comment: "Lab is the plan we actually use. Solo was the trial." },
+    cases: [
+      { net: "SPI_SCK → J2", symptom: "Overshoot and ringing on every edge", cause: "No series termination at R12" },
+      { net: "PWM_OUT → Q1.G", symptom: "Sine where the square should be", cause: "R5 and R6 swapped" },
+      { net: "ADC_IN", symptom: "Reading 40 mV low, drifts with temperature", cause: "Open via under R31, leakage path" },
     ],
   },
   {
     id: "company",
     name: "Company",
     location: "20× Solo",
-    tagline: "Bring-up, diagnosis, field and returns across the whole floor.",
+    tagline: "Bring-up, field, and returns for the whole floor.",
     description:
-      "Twenty times the usage, ten live projects, invoicing. The regime after synthesis is where the unsolved work is — this plan is for the company that lives there.",
-    rating: 4.8,
+      "Twenty times the usage, ten live projects, invoice billing. For the company whose unsolved work is on boards that already exist.",
     price: 200,
     image: modelStudio,
     images: [detailRack, detailContours, detailHex],
@@ -134,11 +128,10 @@ export const models: Model[] = [
       "Setup meeting and restart card",
       "Same model as Solo and Lab",
     ],
-    reviews: [
-      { author: "Kristine A.", rating: 5, date: "August 2026", comment: "Returns used to be a shrug. Now they come back with a named net." },
-      { author: "Pēteris N.", rating: 4, date: "July 2026", comment: "Analog bring-up went from twelve weeks to about seven on the last project." },
-      { author: "Sofia M.", rating: 5, date: "June 2026", comment: "It sits on the scope. Flux and SPICE sit before fab. Different job." },
-      { author: "Andris J.", rating: 5, date: "May 2026", comment: "Company at €200 is a tenth of one Nordic engineer-week. Easy invoice to sign." },
+    cases: [
+      { net: "CAN_H / CAN_L", symptom: "Bus errors after 20 minutes in the field", cause: "Cracked termination resistor, 60 Ω → open" },
+      { net: "VBAT sense", symptom: "Returned units read 0.3 V high", cause: "Divider R44 wrong reel, 47k fitted as 4k7" },
+      { net: "LDO_EN", symptom: "Board brown-outs on cold start", cause: "Pull-down R9 missing, enable floats" },
     ],
   },
 ];

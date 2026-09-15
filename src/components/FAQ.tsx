@@ -5,27 +5,27 @@ import { TextReveal } from "./motion/TextReveal";
 const faqs = [
   {
     q: "What do I actually send it?",
-    a: "A measurement from the bench: a live scope or logger stream, a screenshot of the scope, or a CSV. It stays in volts, amps and seconds. Plus the netlist, so the model can compute what the signal should have been.",
+    a: "A measurement: live scope, logger, a photo of the scope screen, or a CSV. Plus the netlist, so the model can compute what the signal should have been.",
   },
   {
     q: "Is this a chat model that knows electronics?",
-    a: "No. It is a physical model we designed and trained on circuit quantities — topology, potential, current, constraint — against simulation. It never saw language about electronics. Kirchhoff still has to close.",
+    a: "No. It is our own model, trained on circuit quantities against simulation. It has never seen text about electronics. Kirchhoff still has to close.",
   },
   {
     q: "How often is the first answer right?",
-    a: "On the jobs we have run, the likely fault is named on the first pass about 80% of the time. When it is not, it gives two or three candidates and the next probe to separate them.",
+    a: "About 80% of the time on the jobs we have run. When it is not, you get two or three candidates and the probe that separates them.",
   },
   {
     q: "What is “usage” on the plans?",
-    a: "A meter for measure–compare–prove loops. Solo has 2M, Lab 10M, Company 40M a month. Same model on every plan; the meters and live projects are what differ.",
+    a: "A meter for measure–compare–prove loops. Solo 2M, Lab 10M, Company 40M a month. Same model on every plan."
   },
   {
     q: "Where do my captures and netlists go?",
-    a: "To our inference box, to answer your query. They do not train a public model. The weights are ours and closed; your board stays yours.",
+    a: "To our inference box in Riga, to answer your query. They do not train anything public. Your board stays yours."
   },
   {
     q: "Does it replace SPICE or Flux?",
-    a: "No — it sits after them. SPICE predicts the trace before the board exists. Flux and Quilter place and route. Noeti takes the trace from the board that came back and names how that PCB made it.",
+    a: "No. SPICE predicts the trace before the board exists. Flux and Quilter place and route. Noeti starts when the board comes back and the trace is wrong."
   },
 ];
 
@@ -37,7 +37,7 @@ const FAQ = () => (
           <Reveal>
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-4 block">Questions</span>
           </Reveal>
-          <TextReveal as="h2" text="Plain answers before you subscribe." className="text-3xl md:text-4xl font-light tracking-tight" />
+          <TextReveal as="h2" text="Before you subscribe." className="font-serif text-3xl md:text-4xl font-normal tracking-[-0.02em]" />
         </div>
         <div className="lg:col-span-8">
           <Stagger gap={0.07}>

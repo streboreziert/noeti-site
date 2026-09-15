@@ -11,8 +11,7 @@ const pages = [
 ];
 
 const Footer = () => (
-  <footer className="relative bg-ink text-white overflow-hidden grain">
-    <div className="absolute inset-0 bg-dots-light opacity-25" />
+  <footer className="relative bg-ink text-white overflow-hidden border-t border-white/10">
     <div className="container mx-auto px-6 lg:px-12 pt-20 lg:pt-28 pb-10 relative">
       <Stagger className="grid md:grid-cols-12 gap-12 lg:gap-8" gap={0.1}>
         <RevealItem className="md:col-span-5">

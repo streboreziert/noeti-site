@@ -8,6 +8,13 @@ Public marketing site for Noeti — physical AI trained on circuits. Three plans
 | Lab | €60 / month | 10M | 3 |
 | Company | €200 / month | 40M | 10 |
 
+Repo: [streboreziert/noeti-site](https://github.com/streboreziert/noeti-site)
+
+- **Live:** https://noeticompute.com — `./push-noeticompute.sh`
+- **Pages backup:** https://streboreziert.github.io/noeti-site/ — `./push-live.sh` then commit `docs/` and `git push origin main`
+
+Full rules: `/Users/robertstreize/Desktop/Noeti/AGENTS.md`
+
 ## Where things are
 
 - `src/components/scope/` — the live oscilloscope: `waveforms.ts` (the five fault scenarios: expected vs measured trace, candidates, the named fault), `ScopeCanvas.tsx` (phosphor screen), `useScopeSequence.ts` (measure → search → named loop), `LiveScope.tsx` (HUD). Add a scenario by appending to `scenarios`.
@@ -20,13 +27,3 @@ Public marketing site for Noeti — physical AI trained on circuits. Three plans
 npm install
 npm run dev
 ```
-
-Live: **[streboreziert.github.io/noeti-site](https://streboreziert.github.io/noeti-site/)**
-
-The public copy is the `docs/` folder (GitHub Pages). After changing the site:
-
-```bash
-VITE_BASE=/noeti-site/ npm run build
-rm -rf docs && mkdir docs && cp -R dist/. docs/ && touch docs/.nojekyll
-```
-

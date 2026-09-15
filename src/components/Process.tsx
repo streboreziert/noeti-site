@@ -60,13 +60,12 @@ const Process = () => {
 
   return (
     <section id="process" className="relative py-28 lg:py-40 bg-background overflow-hidden">
-      <div className="absolute inset-0 bg-dots opacity-50 [mask-image:radial-gradient(ellipse_at_top,#000,transparent_70%)]" />
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="max-w-2xl mb-16 lg:mb-24">
           <Reveal>
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary mb-5 block">After fabrication</span>
           </Reveal>
-          <TextReveal as="h2" text="Measure. Compare. Prove. Repeat." className="text-3xl md:text-5xl font-light tracking-tight mb-6" />
+          <TextReveal as="h2" text="Measure. Compare. Prove. Repeat." className="font-serif text-3xl md:text-5xl font-normal tracking-[-0.02em] mb-6" />
           <Reveal delay={0.2}>
             <p className="text-muted-foreground font-light leading-relaxed max-w-xl">
               Bring a signal from the bench — a live scope, or an image of the capture. The model compares what should be to what is,
@@ -94,7 +93,7 @@ const Process = () => {
                   onMouseEnter={() => setActive(i)}
                   onViewportEnter={() => setActive(i)}
                   viewport={{ amount: 0.5, margin: "-30% 0px -30% 0px" }}
-                  className={`w-full text-left rounded-2xl border p-6 transition-all duration-500 ${
+                  className={`w-full text-left rounded-lg border p-6 transition-all duration-500 ${
                     isActive ? "border-primary/50 bg-card shadow-hover" : "border-border bg-transparent hover:border-white/20"
                   }`}
                 >
@@ -122,24 +121,15 @@ const Process = () => {
           </div>
 
           {/* Sticky instrument */}
-          <div className="lg:col-span-7 lg:sticky lg:top-28">
+          <div className="lg:col-span-7 lg:sticky lg:top-28 order-first lg:order-none">
             <Reveal>
-              <div className="rounded-2xl border border-white/10 bg-ink overflow-hidden shadow-hover">
+              <div className="rounded-lg border border-white/10 bg-ink overflow-hidden shadow-hover">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">
                   <span>CH1 · {sc.net}</span>
                   <span className="normal-case">{sc.timebase} · {sc.volts}</span>
                 </div>
                 <div className="relative scope-grid">
                   <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto block" role="img" aria-label="Scope screen showing the four steps">
-                    <defs>
-                      <filter id="phosphor" x="-10%" y="-40%" width="120%" height="180%">
-                        <feGaussianBlur stdDeviation="3" result="b" />
-                        <feMerge>
-                          <feMergeNode in="b" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                    </defs>
                     <line x1="0" y1={H / 2} x2={W} y2={H / 2} stroke="rgba(120,255,190,0.18)" />
 
                     {/* 02: residual area */}
@@ -201,13 +191,22 @@ const Process = () => {
                       )}
                     </AnimatePresence>
 
-                    {/* measured — morphs to the fixed board in step 04 */}
+                    {/* measured — halo then crisp; snaps to the fixed board in step 04 */}
+                    <motion.path
+                      d={active === 3 ? paths.expected : paths.measured}
+                      fill="none"
+                      stroke="hsl(150 85% 62% / 0.18)"
+                      strokeWidth="7"
+                      initial={{ pathLength: 0 }}
+                      whileInView={{ pathLength: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.8, ease: EASE }}
+                    />
                     <motion.path
                       d={active === 3 ? paths.expected : paths.measured}
                       fill="none"
                       stroke="hsl(150 85% 62%)"
                       strokeWidth="2"
-                      filter="url(#phosphor)"
                       initial={{ pathLength: 0 }}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true }}

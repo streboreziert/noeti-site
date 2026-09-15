@@ -20,7 +20,7 @@ export const ParallaxBanner = ({ image, alt, eyebrow, title, children, height = 
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <div ref={ref} className={`relative w-full overflow-hidden bg-ink grain ${height}`}>
+    <div ref={ref} className={`relative w-full overflow-hidden bg-ink ${height}`}>
       <motion.img
         src={image}
         alt={alt}
@@ -28,10 +28,9 @@ export const ParallaxBanner = ({ image, alt, eyebrow, title, children, height = 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2 }}
-        className="absolute inset-0 w-full h-[120%] object-cover"
+        className="absolute inset-0 w-full h-[120%] object-cover will-change-transform"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/30" />
-      <div className="absolute inset-0 bg-dots-light opacity-40" />
       <motion.div style={{ opacity }} className="absolute inset-x-0 bottom-0 pb-14 md:pb-20 px-6 lg:px-12 text-white">
         <div className="container mx-auto">
           {eyebrow && (
@@ -44,7 +43,7 @@ export const ParallaxBanner = ({ image, alt, eyebrow, title, children, height = 
               {eyebrow}
             </motion.span>
           )}
-          {title && <TextReveal as="h1" text={title} delay={0.35} className="text-4xl md:text-6xl font-light tracking-tight max-w-3xl" />}
+          {title && <TextReveal as="h1" text={title} delay={0.35} className="font-serif text-4xl md:text-6xl font-normal tracking-[-0.02em] max-w-3xl" />}
           {children}
         </div>
       </motion.div>

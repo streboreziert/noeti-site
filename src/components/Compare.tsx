@@ -20,7 +20,7 @@ const Compare = () => (
         <Reveal>
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-5 block">Others</span>
         </Reveal>
-        <TextReveal as="h2" text="Flux, Quilter, SPICE, chat — none of them sit on the scope." className="text-3xl md:text-4xl font-light tracking-tight" />
+        <TextReveal as="h2" text="Flux, Quilter, SPICE, chat — none of them sit on the scope." className="font-serif text-3xl md:text-4xl font-normal tracking-[-0.02em]" />
       </div>
 
       <Reveal>
