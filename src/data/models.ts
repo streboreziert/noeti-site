@@ -1,4 +1,4 @@
-import { Cpu, Monitor, Shield, Users, Workflow, HardDrive, Map, Lock } from "lucide-react";
+import { Activity, Cpu, Layers, Shield } from "lucide-react";
 import spotForest from "@/assets/spot-forest.jpg";
 import spotLake from "@/assets/spot-lake.jpg";
 import spotMeadow from "@/assets/spot-meadow.jpg";
@@ -23,6 +23,9 @@ export interface Model {
   description: string;
   rating: number;
   price: number;
+  usage: string;
+  scale: string;
+  projects: number;
   image: string;
   images: string[];
   features: string[];
@@ -40,109 +43,115 @@ export const models: Model[] = [
   {
     id: "solo",
     name: "Solo",
-    location: "For you",
+    location: "1× — your bench",
     description:
-      "Your machine first. Chat and Canvas on hardware you control — one seat, a handful of projects, and a quiet path onto the mesh when you ask for it.",
+      "One live project. Compare what you measured — V(t), I(t) — to what .tran / .ac / operating point said should be there. Same physical model we trained in-house.",
     rating: 4.9,
     price: 20,
+    usage: "2M",
+    scale: "1×",
+    projects: 1,
     image: spotForest,
     images: [detailForest1, detailForest2, detailLake1],
-    features: ["1 user", "3 projects", "2 devices"],
+    features: ["2M usage", "1 live project"],
     featured: true,
     amenities: [
-      { icon: Cpu, label: "Local models", description: "Run on the desk that owns the job" },
-      { icon: HardDrive, label: "2 GB brain", description: "Private storage on your hardware" },
-      { icon: Monitor, label: "2 devices", description: "Pair a PC and a phone" },
-      { icon: Users, label: "1 seat", description: "Built for a single operator" },
+      { icon: Activity, label: "2M usage / mo", description: "Observed minus predicted, in volts and amps" },
+      { icon: Layers, label: "1 live project", description: "One realized netlist after fabrication" },
+      { icon: Cpu, label: "Physical model", description: "Closed weights. Topology, potential, current, constraint." },
     ],
     details: [
-      "1 user seat",
-      "3 saved projects",
-      "2 paired devices",
-      "2M cloud tokens when you escalate",
-      "2 GB brain storage",
-      "Chat and Canvas included",
+      "2M usage / month",
+      "1 live project",
+      "V(t), I(t) versus .tran / .ac / operating point",
+      "First-pass fault: net, part, next probe",
+      "1× base usage",
     ],
     reviews: [
-      { author: "Marta K.", rating: 5, date: "August 2026", comment: "Finally a workspace that stays on my laptop unless I send it out. The Where map is the whole product." },
-      { author: "Jonas P.", rating: 5, date: "July 2026", comment: "Installed in an afternoon. Solo is enough to draft, run, and keep the binder local." },
-      { author: "Elena V.", rating: 4, date: "June 2026", comment: "Quiet, simple, and it does not push me into someone else's cloud." },
-      { author: "Rihards L.", rating: 5, date: "May 2026", comment: "The right size if you want control before you want a team." },
+      { author: "Marta K.", rating: 5, date: "August 2026", comment: "Put the Vgs capture against the .tran expected. It named the net I would have spent the afternoon probing." },
+      { author: "Jonas P.", rating: 5, date: "July 2026", comment: "Residual in volts. First pass after fab named the part." },
+      { author: "Elena V.", rating: 4, date: "June 2026", comment: "The object is ΔV on the schematic, not a paragraph about the circuit." },
+      { author: "Rihards L.", rating: 5, date: "May 2026", comment: "1× usage. One live project. Enough for a bench." },
     ],
   },
   {
-    id: "desk",
-    name: "Desk",
-    location: "For a small team",
+    id: "lab",
+    name: "Lab",
+    location: "5× Solo",
     description:
-      "A shared Where map for a small floor. Five people, one approved local model, and a board that shows which machine is doing the work.",
+      "Five times Solo. 10M residual evaluations a month, three live projects. Analog and legacy netlists: expected edges from .tran / .ac versus what the instrument wrote. Same closed weights.",
     rating: 5.0,
     price: 60,
+    usage: "10M",
+    scale: "5×",
+    projects: 3,
     image: spotLake,
     images: [detailLake1, detailLake2, detailMeadow1],
-    features: ["5 users", "15 projects", "8 devices"],
+    features: ["10M usage", "3 live projects"],
     featured: true,
     amenities: [
-      { icon: Map, label: "Shared Where map", description: "See PC, phone, and private rack" },
-      { icon: Users, label: "5 seats", description: "One model, many chats" },
-      { icon: Workflow, label: "Canvas boards", description: "Workflows with local parts and scripts" },
-      { icon: HardDrive, label: "15 GB brain", description: "Shared storage the team can count" },
+      { icon: Activity, label: "10M usage / mo", description: "5× Solo. Residual evaluations per month" },
+      { icon: Layers, label: "3 live projects", description: "Three realized netlists after fabrication" },
+      { icon: Cpu, label: "Closed weights", description: "Trained on trajectories. Residual stays SI." },
     ],
     details: [
-      "5 user seats",
-      "15 saved projects",
-      "8 paired devices",
-      "8M cloud tokens when you escalate",
-      "15 GB brain storage",
-      "Roles for who can run where",
+      "10M usage / month — 5× Solo",
+      "3 live projects",
+      "Analog and legacy netlists",
+      "Fault named with nets and parts",
+      "Same physical model as Solo",
     ],
     reviews: [
-      { author: "Anna B.", rating: 5, date: "August 2026", comment: "Our five-person office finally has ChatGPT-style help without pouring files into a vendor cloud." },
-      { author: "Tomas D.", rating: 5, date: "July 2026", comment: "The board makes routing visible. People stop asking 'where did that go?'" },
-      { author: "Inese R.", rating: 5, date: "June 2026", comment: "Simple enough that nobody needed a training day." },
-      { author: "Markus H.", rating: 5, date: "May 2026", comment: "Desk is the plan we actually use. Solo was the trial; this is the floor." },
+      { author: "Anna B.", rating: 5, date: "August 2026", comment: "Expected edge from .tran, captured edge from the scope. The disagreement is the object." },
+      { author: "Tomas D.", rating: 5, date: "July 2026", comment: "5× usage. The lab actually spends it on analog bring-up." },
+      { author: "Inese R.", rating: 5, date: "June 2026", comment: "Analog time dropped ≈40%. We still own the probe." },
+      { author: "Markus H.", rating: 5, date: "May 2026", comment: "Lab is the 5× plan. Same residual, three live projects." },
     ],
   },
   {
-    id: "studio",
-    name: "Studio",
-    location: "For a larger floor",
+    id: "company",
+    name: "Company",
+    location: "20× Solo",
     description:
-      "Private-first routing for a larger team. Twenty seats, a fleet of devices, and a default that keeps sensitive drafts on hardware you choose.",
+      "Twenty times Solo. 40M residual evaluations a month, ten live projects. Priority inference after fabrication across a hardware line. Architecture and training run are ours.",
     rating: 4.8,
     price: 200,
+    usage: "40M",
+    scale: "20×",
+    projects: 10,
     image: spotMeadow,
     images: [detailMeadow1, detailMeadow2, detailForest1],
-    features: ["20 users", "60 projects", "25 devices"],
+    features: ["40M usage", "10 live projects"],
     featured: true,
     amenities: [
-      { icon: Shield, label: "Private-first routing", description: "Local by default, cloud only on purpose" },
-      { icon: Lock, label: "Custody", description: "A trail of what ran, and on which machine" },
-      { icon: Users, label: "20 seats", description: "A whole floor on one approved LLM" },
-      { icon: Workflow, label: "Canvas at scale", description: "Boards, scripts, and site models together" },
+      { icon: Shield, label: "Priority inference", description: "First in line after fabrication" },
+      { icon: Activity, label: "40M usage / mo", description: "20× Solo. Residual evaluations per month" },
+      { icon: Layers, label: "10 live projects", description: "Ten realized netlists after fabrication" },
     ],
     details: [
-      "20 user seats",
-      "60 saved projects",
-      "25 paired devices",
-      "30M cloud tokens when you escalate",
-      "80 GB brain storage",
-      "Private-first routing and Seal export",
+      "40M usage / month — 20× Solo",
+      "10 live projects",
+      "Priority inference after fabrication",
+      "Observed minus predicted in SI units",
+      "Same physical model as Solo",
     ],
     reviews: [
-      { author: "Kristine A.", rating: 5, date: "August 2026", comment: "We needed a floor-wide UI without standing up an ML team. Studio is that product." },
-      { author: "Pēteris N.", rating: 4, date: "July 2026", comment: "Routing and seats are clear. Legal finally agreed to keep drafts on our rack." },
-      { author: "Sofia M.", rating: 5, date: "June 2026", comment: "Canvas plus local models is the workflow we could not get from a chatbot." },
-      { author: "Andris J.", rating: 5, date: "May 2026", comment: "The 200 euro plan is the one that matches a real office, not a demo." },
+      { author: "Kristine A.", rating: 5, date: "August 2026", comment: "20× usage. The model is topology and state, not language about the line." },
+      { author: "Pēteris N.", rating: 4, date: "July 2026", comment: "After fabrication is where the time lives. That is what we bought." },
+      { author: "Sofia M.", rating: 5, date: "June 2026", comment: "First-pass fault named often enough that bring-up procedure changed." },
+      { author: "Andris J.", rating: 5, date: "May 2026", comment: "Company matches a hardware line. Ten live projects, same residual." },
     ],
   },
 ];
 
 export const getFeaturedModels = () => models.filter((model) => model.featured);
 
-export const getModelById = (id: string) => models.find((model) => model.id === id);
+export const getModelById = (id: string) => {
+  if (id === "desk") return models.find((model) => model.id === "lab");
+  if (id === "studio") return models.find((model) => model.id === "company");
+  return models.find((model) => model.id === id);
+};
 
-/** @deprecated Use models / getFeaturedModels */
 export const locations = models;
 export const getFeaturedLocations = getFeaturedModels;
 export const getLocationById = getModelById;

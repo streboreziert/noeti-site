@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Cpu } from "lucide-react";
+import { Menu, X, Cpu, Linkedin } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import { LINKEDIN_URL } from "@/lib/contact";
 interface NavigationProps {
   variant?: "default" | "dark";
 }
@@ -60,7 +61,8 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
         y: 0,
       }}
       transition={{
-        duration: 0.6,
+        duration: 0.85,
+        ease: [0.22, 1, 0.36, 1],
       }}
       className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-400 ${isMobileMenuOpen ? "bg-foreground" : isDark ? (isScrolled ? "bg-foreground/95 backdrop-blur-lg shadow-soft" : "bg-foreground") : isScrolled ? "bg-card/95 backdrop-blur-lg shadow-soft" : "bg-transparent"}`}
     >
@@ -106,16 +108,36 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
               className={`rounded-full smooth-hover text-[11px] uppercase tracking-wider font-normal backdrop-blur-md border border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] px-5 ${isDark || !isScrolled ? "bg-white/10 text-white hover:bg-primary/80 hover:text-white hover:border-primary/80" : "bg-white/20 text-foreground hover:bg-primary/80 hover:text-white hover:border-primary/80"}`}
               onClick={handleBookNow}
             >
-              Get Started
+              Subscribe
             </Button>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Noeti on LinkedIn"
+              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 smooth-hover hover:opacity-70 ${isDark || !isScrolled ? "text-white" : "text-foreground"}`}
+            >
+              <Linkedin className="h-3.5 w-3.5" strokeWidth={1.5} />
+            </a>
           </div>
 
-          <button
-            className={`md:hidden ${isMobileMenuOpen || isDark || !isScrolled ? "text-white" : "text-foreground"}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Noeti on LinkedIn"
+              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 ${isMobileMenuOpen || isDark || !isScrolled ? "text-white" : "text-foreground"}`}
+            >
+              <Linkedin className="h-3.5 w-3.5" strokeWidth={1.5} />
+            </a>
+            <button
+              className={`${isMobileMenuOpen || isDark || !isScrolled ? "text-white" : "text-foreground"}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         <AnimatePresence>
@@ -168,7 +190,7 @@ const Navigation = ({ variant = "default" }: NavigationProps) => {
                   handleBookNow();
                 }}
               >
-                Get Started
+                Subscribe
               </Button>
             </motion.div>
           )}

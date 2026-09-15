@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { User, Mail, MessageSquare, FileText } from "lucide-react";
 import bannerImage from "@/assets/detail-meadow-1.jpg";
 import { mailTo } from "@/lib/contact";
+import { easeOutExpo, bannerTransition } from "@/lib/motion";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -43,7 +44,7 @@ const Contact = () => {
 
     toast({
       title: "Message sent",
-      description: "We'll get back to you as soon as possible.",
+      description: "We'll reply from Latvia.",
     });
 
     setFormData({ name: "", email: "", subject: "", message: "" });
@@ -58,21 +59,21 @@ const Contact = () => {
       <div className="relative w-full h-[50vh] overflow-hidden">
         <motion.img
           src={bannerImage}
-          alt="Contact banner"
+          alt="Contact — write with a netlist and a capture"
           style={{ y }}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.12 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
+          transition={bannerTransition}
           className="absolute inset-0 w-full h-[120%] object-cover"
         />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       <main className="py-24 lg:py-32 px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.85, ease: easeOutExpo }}
           className="max-w-md mx-auto"
         >
           <div className="text-center mb-16">
@@ -80,10 +81,10 @@ const Contact = () => {
               Contact
             </span>
             <h1 className="text-2xl md:text-3xl font-light tracking-tight text-foreground mb-4">
-              Get in Touch
+              Write from the bench.
             </h1>
-            <p className="text-sm text-muted-foreground font-light">
-              Have a question or want a plan? We'd love to hear from you.
+            <p className="text-sm text-muted-foreground font-light leading-relaxed">
+              A netlist, a measured trajectory, the expected waveform. We reply from Latvia.
             </p>
           </div>
 

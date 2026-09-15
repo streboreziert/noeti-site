@@ -1,95 +1,96 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { Cpu, Lock, Users, Workflow } from "lucide-react";
+import { useRef } from "react";
+import { Activity, Radio, RefreshCw, Search } from "lucide-react";
+import { easeOutExpo } from "@/lib/motion";
 
 const features = [
   {
-    icon: Cpu,
-    title: "On your hardware",
-    description: "Local models on the desk, phone, or rack that owns the job — not a vendor default",
-    videoUrl: "https://videos.pexels.com/video-files/4460100/4460100-hd_1920_1080_30fps.mp4",
+    icon: Radio,
+    step: "01",
+    title: "Measure the circuit",
+    description:
+      "Connect a scope or logger, or upload a capture — waveform, screenshot, or CSV. The measurement stays in volts, amps, and seconds. That trajectory is what the model reads.",
   },
   {
-    icon: Lock,
-    title: "Private by default",
-    description: "Sensitive drafts stay where you put them. Cloud only when you mean to escalate",
-    videoUrl: "https://videos.pexels.com/video-files/4280450/4280450-hd_1920_1080_30fps.mp4",
+    icon: Activity,
+    step: "02",
+    title: "Compare should to is",
+    description:
+      "From the netlist, the model computes the expected state — .tran, .ac, operating point — and sets it next to what you measured. The residual ΔV, ΔI is the disagreement, in physical units.",
   },
   {
-    icon: Users,
-    title: "One model, many chats",
-    description: "A simple office UI so the whole floor talks to the same approved local LLM",
-    videoUrl: "https://videos.pexels.com/video-files/5487781/5487781-hd_1920_1080_30fps.mp4",
+    icon: Search,
+    step: "03",
+    title: "Name the likely fault",
+    description:
+      "Candidate faults are simulated forward. The model asks which disagreement on the schematic would produce this signal, and returns the likely cause: net, part, and why this residual matches.",
   },
   {
-    icon: Workflow,
-    title: "Canvas workflows",
-    description: "Boards with local parts and scripts — plan, draft, and run on machines you choose",
-    videoUrl: "https://videos.pexels.com/video-files/4460098/4460098-hd_1920_1080_30fps.mp4",
+    icon: RefreshCw,
+    step: "04",
+    title: "Probe again until it works",
+    description:
+      "The next probe is the next measurement. Capture, compare, prove. The loop closes when the residual collapses and the realized circuit does what the simulation said it should.",
   },
 ];
 
 const Experience = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.18 });
 
   return (
     <section id="experience" className="py-32 lg:py-40 bg-secondary/30" ref={ref}>
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.9, ease: easeOutExpo }}
           className="text-center mb-20"
         >
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">The Experience</span>
-          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">Simplicity Meets Control</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto font-light">
-            Private AI without hiring an ML team
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">After fabrication</span>
+          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">
+            Measure. Compare. Prove. Repeat.
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            Bring a signal from the bench — a live scope, or an image of the capture.
+            The model compares what should be to what is, simulates the faults that
+            would produce that residual, and sends you back to the next probe until the circuit works.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
-            const isHovered = hoveredIndex === index;
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 0, scale: 1 }}
-                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0 }}
-                whileHover={{ y: -4, scale: 1.01 }}
-                transition={{ duration: 0.3 }}
-                onHoverStart={() => setHoveredIndex(index)}
-                onHoverEnd={() => setHoveredIndex(null)}
-                className="relative overflow-hidden bg-white/60 backdrop-blur-md border border-white/80 rounded-lg p-6 group hover:bg-black/50 hover:shadow-xl hover:shadow-primary/5 cursor-pointer"
+                key={feature.step}
+                initial={{ opacity: 0, y: 28 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.75, delay: 0.1 + index * 0.12, ease: easeOutExpo }}
               >
-                {/* Video Background */}
-                <video
-                  src={feature.videoUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"
-                />
-
-                {/* Content */}
-                <div className="relative z-10 flex items-center gap-5">
-                  <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 group-hover:bg-white/20 transition-colors duration-300">
-                    <Icon className="h-5 w-5 text-primary group-hover:text-white transition-colors duration-300" />
+                <motion.div
+                  whileHover={{ y: -6, scale: 1.008 }}
+                  transition={{ duration: 0.6, ease: easeOutExpo }}
+                  className="relative overflow-hidden bg-card/80 backdrop-blur-md border border-border rounded-lg p-6 md:p-7 group hover:bg-black/70 hover:shadow-xl hover:shadow-primary/5 cursor-pointer"
+                >
+                  <div className="relative z-10 flex items-start gap-5">
+                    <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 group-hover:bg-white/20 transition-colors duration-700">
+                      <Icon className="h-5 w-5 text-primary group-hover:text-white transition-colors duration-700" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-white/60 mb-1 transition-colors duration-700">
+                        {feature.step}
+                      </span>
+                      <h3 className="text-sm font-normal mb-1 text-foreground group-hover:text-white tracking-tight transition-colors duration-700">
+                        {feature.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground group-hover:text-white/90 leading-relaxed font-light transition-colors duration-700">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <h3 className="text-sm font-normal mb-1 text-foreground group-hover:text-white tracking-tight transition-colors duration-300">
-                      {feature.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground group-hover:text-white/90 leading-relaxed font-light transition-colors duration-300">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
+                </motion.div>
               </motion.div>
             );
           })}

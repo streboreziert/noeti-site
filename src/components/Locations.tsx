@@ -7,6 +7,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { getFeaturedModels } from "@/data/models";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { easeOutExpo } from "@/lib/motion";
 
 const Locations = () => {
   const ref = useRef(null);
@@ -62,15 +63,16 @@ const Locations = () => {
     <section id="locations" className="py-32 lg:py-40 bg-background" ref={ref}>
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.9, ease: easeOutExpo }}
           className="text-center mb-16"
         >
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Our Models</span>
-          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">Featured Plans</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto font-light">
-            Three clear models — Solo, Desk, and Studio — priced in euros
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Access</span>
+          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">Three plans. One model.</h2>
+          <p className="text-sm text-muted-foreground max-w-lg mx-auto font-light leading-relaxed">
+            Same physical model on every plan. Usage at 1×, 5×, and 20×.
+            Live projects at 1, 3, and 10.
           </p>
         </motion.div>
 
@@ -103,13 +105,17 @@ const Locations = () => {
                         }
                       : {}
                   }
-                  transition={{ duration: 0.4, delay: isInView && !hoveredIndex ? index * 0.15 : 0, ease: "easeOut" }}
+                  transition={{
+                    duration: hoveredIndex === null ? 1.05 : 0.7,
+                    delay: isInView && hoveredIndex === null ? index * 0.14 : 0,
+                    ease: easeOutExpo,
+                  }}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   className="absolute w-[320px] cursor-pointer"
                   style={{ zIndex: isHovered ? 50 : 10 - Math.abs(index - 1) }}
                 >
-                  <Card className={`overflow-hidden border border-border bg-card transition-shadow duration-300 ${isHovered ? "shadow-2xl" : "shadow-lg"}`}>
+                  <Card className={`overflow-hidden border border-border bg-card transition-shadow duration-700 ${isHovered ? "shadow-2xl" : "shadow-lg"}`}>
                     {renderCard(location)}
                   </Card>
                 </motion.div>

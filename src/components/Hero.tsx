@@ -1,19 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Cpu } from "lucide-react";
-import heroImage from "@/assets/hero-camping.jpg";
+import { easeOutExpo } from "@/lib/motion";
+import heroImage from "@/assets/hero.jpg";
 import forestImage from "@/assets/spot-forest.jpg";
 import lakeImage from "@/assets/spot-lake.jpg";
 import meadowImage from "@/assets/spot-meadow.jpg";
 
 const slides = [
-  { image: heroImage, alt: "Noeti — compute on hardware you choose" },
-  { image: forestImage, alt: "Solo — your machine first" },
-  { image: lakeImage, alt: "Desk — a shared Where map" },
-  { image: meadowImage, alt: "Studio — private-first routing" },
+  { image: heroImage, alt: "Physical AI trained on circuits" },
+  { image: forestImage, alt: "Solo — one engineer" },
+  { image: lakeImage, alt: "Lab — a small bench" },
+  { image: meadowImage, alt: "Company — a hardware team" },
 ];
 
-const SLIDE_DURATION = 5000;
+const SLIDE_DURATION = 6200;
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -45,62 +46,69 @@ const Hero = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Image Ticker */}
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentSlide}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 1.85, ease: easeOutExpo }}
           className="absolute inset-0"
         >
-          <img
+          <motion.img
             src={slides[currentSlide].image}
             alt={slides[currentSlide].alt}
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 8.2, ease: "linear" }}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/50" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Bottom-Left Text Content */}
       <div className="absolute bottom-20 left-6 md:left-12 lg:left-16 z-10 text-white">
-        {/* Tree Icon */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+          transition={{ delay: 0.25, duration: 0.7, ease: easeOutExpo }}
           className="mb-4"
         >
           <Cpu className="w-6 h-6 text-white stroke-[1.5]" />
         </motion.div>
 
-        {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight max-w-md text-left flex flex-col"
+          transition={{ delay: 0.38, duration: 0.85, ease: easeOutExpo }}
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight max-w-lg text-left flex flex-col"
         >
-          <span>AI where</span>
-          <span>you want it</span>
+          <span>The circuit exists.</span>
+          <span>Inference starts.</span>
         </motion.h1>
 
-        {/* CTA Button */}
-        <motion.button
-          initial={{ opacity: 0, y: 10 }}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
-          className="mt-6 flex items-center gap-3 bg-white text-foreground px-6 py-3 rounded-full text-sm tracking-wide hover:bg-white/90 transition-colors"
+          transition={{ delay: 0.55, duration: 0.75, ease: easeOutExpo }}
+          className="mt-4 max-w-md text-sm font-light text-white/85 leading-relaxed"
         >
-          Get Started
+          Physical AI we designed and trained for circuits — not for language.
+          After fabrication: measure a signal, compare it to simulation, name the likely fault, and probe again until it works.
+        </motion.p>
+
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.7, ease: easeOutExpo }}
+          onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
+          className="mt-6 flex items-center gap-3 bg-white text-neutral-900 px-6 py-3 rounded-full text-sm tracking-wide hover:bg-white/90 transition-colors duration-700"
+        >
+          Subscribe
           <ArrowRight className="w-4 h-4" />
         </motion.button>
       </div>
 
-      {/* Progress Bars */}
       <div className="absolute bottom-8 left-6 md:left-12 lg:left-16 right-6 md:right-12 lg:right-16 z-10 flex gap-2">
         {slides.map((_, index) => (
           <button

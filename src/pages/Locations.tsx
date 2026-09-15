@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Star, ArrowRight, ArrowUpDown } from "lucide-react";
 import bannerImage from "@/assets/detail-forest-1.jpg";
 import { models as locations } from "@/data/models";
+import { easeOutExpo, bannerTransition } from "@/lib/motion";
 
 type SortOption = "price-low" | "price-high" | "rating";
 
@@ -39,32 +40,33 @@ const Locations = () => {
       <div className="relative w-full h-[50vh] overflow-hidden">
         <motion.img
           src={bannerImage}
-          alt="Locations banner"
+          alt="Plans — residual evaluations and live projects"
           style={{ y }}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.12 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
+          transition={bannerTransition}
           className="absolute inset-0 w-full h-[120%] object-cover"
         />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       <main className="py-24 lg:py-32 px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.85, ease: easeOutExpo }}
           className="max-w-6xl mx-auto"
         >
           <div className="text-center mb-12">
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">
-              Our Models
+              Access
             </span>
             <h1 className="text-2xl md:text-3xl font-light tracking-tight text-foreground mb-4">
-              All Plans
+              Same model. Three scales.
             </h1>
-            <p className="text-sm text-muted-foreground font-light max-w-md mx-auto">
-              Solo, Desk, and Studio — three models, three prices
+            <p className="text-sm text-muted-foreground font-light max-w-lg mx-auto leading-relaxed">
+              Solo €20 · Lab €60 · Company €200. Usage at 1×, 5×, 20×
+              (2M / 10M / 40M). Live projects at 1, 3, and 10.
             </p>
           </div>
 
@@ -91,7 +93,7 @@ const Locations = () => {
                 key={location.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.75, delay: index * 0.1, ease: easeOutExpo }}
               >
                 <Card className="overflow-hidden border border-border bg-card shadow-soft hover:shadow-lg transition-shadow duration-300">
                   <Link to={`/model/${location.id}`} className="block">

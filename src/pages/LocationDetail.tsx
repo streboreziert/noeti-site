@@ -1,30 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, MapPin, Star, Calendar, ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useState } from "react";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { toast } from "sonner";
 import { getModelById } from "@/data/models";
-import { mailTo } from "@/lib/contact";
+import { easeOutExpo, bannerTransition } from "@/lib/motion";
 
 const LocationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = id ? getModelById(id) : null;
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: undefined
-  });
-  const [guests, setGuests] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const { scrollY } = useScroll();
@@ -47,15 +36,7 @@ const LocationDetail = () => {
   const allImages = [location.image, ...location.images];
 
   const handleBooking = () => {
-    if (!dateRange?.from || !dateRange?.to || !guests) {
-      toast.error("Please select start, review dates and number of seats");
-      return;
-    }
-    mailTo(
-      `Noeti ${location.name} request`,
-      `Model: ${location.name} (€${location.price}/mo)\nSeats: ${guests}\nWindow: ${formatDateRange()}`,
-    );
-    toast.success(`Request for ${location.name} submitted!`);
+    navigate(`/?plan=${location.id}#booking`);
   };
 
   const nextImage = () => {
@@ -64,12 +45,6 @@ const LocationDetail = () => {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
-  };
-
-  const formatDateRange = () => {
-    if (!dateRange?.from) return "Select dates";
-    if (!dateRange?.to) return format(dateRange.from, "MMM d, yyyy");
-    return `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d, yyyy")}`;
   };
 
   return (
@@ -82,12 +57,12 @@ const LocationDetail = () => {
           src={allImages[0]}
           alt={location.name}
           style={{ y }}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.12 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
+          transition={bannerTransition}
           className="absolute inset-0 w-full h-[120%] object-cover"
         />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
       
       <main>
@@ -104,9 +79,9 @@ const LocationDetail = () => {
 
           {/* Title, Description, Rating */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85, ease: easeOutExpo }}
             className="mb-10"
           >
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
@@ -127,9 +102,9 @@ const LocationDetail = () => {
 
           {/* Full Width Image Slideshow */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.12, ease: easeOutExpo }}
             className="relative w-full h-[50vh] lg:h-[60vh] mb-16 rounded-lg overflow-hidden max-w-full"
           >
             <AnimatePresence mode="wait">
@@ -140,7 +115,7 @@ const LocationDetail = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.85, ease: easeOutExpo }}
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </AnimatePresence>
@@ -184,10 +159,10 @@ const LocationDetail = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.22, ease: easeOutExpo }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Amenities</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Meters</h2>
                   <div className="grid md:grid-cols-2 gap-6">
                     {location.amenities.map((amenity: any, index: number) => {
                       const Icon = amenity.icon;
@@ -212,10 +187,10 @@ const LocationDetail = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.8, delay: 0.32, ease: easeOutExpo }}
               >
                 <Card className="p-8 border border-border shadow-soft">
-                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">What's Included</h2>
+                  <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Specification</h2>
                   <ul className="grid md:grid-cols-2 gap-3">
                     {location.details.map((detail: string, index: number) => (
                       <li key={index} className="flex items-start gap-3 text-sm text-muted-foreground font-light">
@@ -231,7 +206,7 @@ const LocationDetail = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                transition={{ duration: 0.8, delay: 0.42, ease: easeOutExpo }}
               >
                 <Card className="p-8 border border-border shadow-soft">
                   <h2 className="text-[11px] uppercase tracking-wider font-normal mb-6">Early Notes</h2>
@@ -283,7 +258,7 @@ const LocationDetail = () => {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.85, delay: 0.18, ease: easeOutExpo }}
                 className="sticky top-24"
               >
                 <Card className="p-8 border border-border shadow-soft">
@@ -300,44 +275,20 @@ const LocationDetail = () => {
 
                   <div className="space-y-6">
                     <div>
-                      <Label htmlFor="detail-guests" className="text-[11px] uppercase tracking-wider font-normal mb-3 block">
-                        Seats
-                      </Label>
-                      <Select value={guests} onValueChange={setGuests}>
-                        <SelectTrigger id="detail-guests" className="rounded-md text-sm font-light">
-                          <SelectValue placeholder="Select seats" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">1 Seat — Solo</SelectItem>
-                          <SelectItem value="5">5 Seats — Desk</SelectItem>
-                          <SelectItem value="20">20 Seats — Studio</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <p className="text-[11px] uppercase tracking-wider font-normal mb-2 text-muted-foreground">
+                        Included
+                      </p>
+                      <p className="text-sm font-light">
+                        {location.usage} usage / mo · {location.scale} Solo
+                      </p>
+                      <p className="text-xs text-muted-foreground font-light mt-1">
+                        {location.features.slice(1).join(" · ")}
+                      </p>
                     </div>
 
-                    <div>
-                      <Label className="text-[11px] uppercase tracking-wider font-normal mb-3 block">
-                        Start & Review
-                      </Label>
-                      <CalendarComponent
-                        mode="range"
-                        selected={dateRange}
-                        onSelect={setDateRange}
-                        numberOfMonths={1}
-                        className="rounded-md border-border text-sm pointer-events-auto"
-                        disabled={(date) => date < new Date()}
-                      />
-                      {dateRange?.from && (
-                        <p className="text-xs text-muted-foreground font-light mt-2 text-center">
-                          {formatDateRange()}
-                          {dateRange?.to && (
-                            <span className="block">
-                              {Math.ceil((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24))} days
-                            </span>
-                          )}
-                        </p>
-                      )}
-                    </div>
+                    <p className="text-xs text-muted-foreground font-light leading-relaxed">
+                      A 30-minute setup meeting. The Gmail invite lands on both calendars.
+                    </p>
 
                     <Button
                       size="default"
@@ -345,7 +296,7 @@ const LocationDetail = () => {
                       onClick={handleBooking}
                     >
                       <Calendar className="mr-2 h-4 w-4" />
-                      Get Started
+                      Book setup
                     </Button>
                   </div>
                 </Card>

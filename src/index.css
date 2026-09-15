@@ -8,33 +8,33 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 99%;
-    --foreground: 0 0% 20%;
+    --background: 30 8% 9%;
+    --foreground: 36 10% 92%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
+    --card: 30 8% 13%;
+    --card-foreground: 36 10% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover: 30 8% 13%;
+    --popover-foreground: 36 10% 92%;
 
-    --primary: 150 15% 70%;
+    --primary: 150 16% 42%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 20%;
+    --secondary: 30 7% 16%;
+    --secondary-foreground: 36 10% 92%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 50%;
+    --muted: 30 7% 16%;
+    --muted-foreground: 32 8% 62%;
 
-    --accent: 150 20% 95%;
-    --accent-foreground: 0 0% 25%;
+    --accent: 150 10% 16%;
+    --accent-foreground: 150 20% 82%;
 
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 92%;
-    --input: 0 0% 92%;
-    --ring: 150 15% 70%;
+    --border: 30 6% 20%;
+    --input: 30 6% 20%;
+    --ring: 150 16% 42%;
 
     --radius: 0.5rem;
     
@@ -42,7 +42,7 @@ All colors MUST be HSL.
     --overlay-gradient: linear-gradient(180deg, transparent 0%, hsl(0 0% 0% / 0.4) 100%);
     --soft-shadow: 0 2px 8px hsl(0 0% 0% / 0.04);
     --hover-shadow: 0 4px 16px hsl(0 0% 0% / 0.08);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -116,11 +116,11 @@ All colors MUST be HSL.
 
 @layer utilities {
   .smooth-hover {
-    @apply transition-all duration-400 ease-out;
+    @apply transition-all duration-700 ease-out;
   }
   
   .hover-lift {
-    @apply hover:scale-105 hover:shadow-xl transition-all duration-400;
+    @apply hover:scale-105 hover:shadow-xl transition-all duration-700;
   }
   
   .text-balance {
