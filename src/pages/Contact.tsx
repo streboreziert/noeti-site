@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
+import { ParallaxBanner } from "@/components/motion/ParallaxBanner";
+import { PageTransition } from "@/components/motion/PageTransition";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { User, Mail, MessageSquare, FileText } from "lucide-react";
-import bannerImage from "@/assets/detail-meadow-1.jpg";
+import bannerImage from "@/assets/detail-particles.jpg";
 import { mailTo } from "@/lib/contact";
 
 const Contact = () => {
@@ -22,8 +24,6 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,7 +42,7 @@ const Contact = () => {
     );
 
     toast({
-      title: "Message sent",
+      title: "Opening your mail client",
       description: "We'll get back to you as soon as possible.",
     });
 
@@ -51,22 +51,10 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <PageTransition className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
 
-      {/* Hero Image with Parallax */}
-      <div className="relative w-full h-[50vh] overflow-hidden">
-        <motion.img
-          src={bannerImage}
-          alt="Contact banner"
-          style={{ y }}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0 w-full h-[120%] object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+      <ParallaxBanner image={bannerImage} alt="Contact Noeti" eyebrow="Contact" title="Talk to the person who trained it." />
 
       <main className="py-24 lg:py-32 px-6 lg:px-12">
         <motion.div
@@ -83,7 +71,7 @@ const Contact = () => {
               Get in Touch
             </h1>
             <p className="text-sm text-muted-foreground font-light">
-              Have a question or want a plan? We'd love to hear from you.
+              A board on the bench, a netlist nobody remembers, a plan question — write to Riga.
             </p>
           </div>
 
@@ -168,7 +156,7 @@ const Contact = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageTransition>
   );
 };
 

@@ -51,7 +51,7 @@ const Booking = () => {
 
   const handleStep1Continue = () => {
     if (!dateRange?.from || !dateRange?.to || !location || !guests) {
-      toast.error("Please fill in all fields including start and review dates");
+      toast.error("Please choose a plan, live projects and a meeting window");
       return;
     }
     setDirection(1);
@@ -76,15 +76,15 @@ const Booking = () => {
     }
 
     mailTo(
-      `Noeti ${getLocationLabel(location)} request`,
+      `Noeti ${getLocationLabel(location)} — setup meeting`,
       [
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${phone}`,
         `Postcode: ${postcode}`,
         `Model: ${getLocationLabel(location)}`,
-        `Seats: ${guests}`,
-        `Window: ${formatDateRange()}`,
+        `Live projects: ${guests}`,
+        `Meeting window: ${formatDateRange()}`,
       ].join("\n"),
     );
 
@@ -124,10 +124,10 @@ const Booking = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Reservations</span>
-          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">Start Your Plan</h2>
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Setup</span>
+          <h2 className="text-2xl md:text-4xl font-light mb-4 text-foreground tracking-tight">Book a setup meeting</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto font-light">
-            Choose a model and tell us when you want access
+            Choose a plan and a 30-minute slot. We confirm by email and land on both calendars — yours and ours.
           </p>
         </motion.div>
 
@@ -165,11 +165,11 @@ const Booking = () => {
                       <div>
                         <Label htmlFor="location" className="flex items-center gap-1.5 mb-3 text-card-foreground text-[11px] uppercase tracking-wider font-normal">
                           <MapPin className="h-3 w-3" />
-                          Model
+                          Plan
                         </Label>
                         <Select value={location} onValueChange={setLocation}>
                           <SelectTrigger id="location" className="rounded-md text-sm font-light">
-                            <SelectValue placeholder="Select a model" />
+                            <SelectValue placeholder="Select a plan" />
                           </SelectTrigger>
                           <SelectContent>
                             {models.map((loc) => (
@@ -184,16 +184,16 @@ const Booking = () => {
                       <div>
                         <Label htmlFor="guests" className="flex items-center gap-1.5 mb-3 text-card-foreground text-[11px] uppercase tracking-wider font-normal">
                           <Users className="h-3 w-3" />
-                          Seats
+                          Live projects
                         </Label>
                         <Select value={guests} onValueChange={setGuests}>
                           <SelectTrigger id="guests" className="rounded-md text-sm font-light">
-                            <SelectValue placeholder="Select seats" />
+                            <SelectValue placeholder="Live projects" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">1 Seat — Solo</SelectItem>
-                            <SelectItem value="5">5 Seats — Desk</SelectItem>
-                            <SelectItem value="20">20 Seats — Studio</SelectItem>
+                            <SelectItem value="1">1 — Solo, 1 live project</SelectItem>
+                            <SelectItem value="3">3 — Lab, 3 live projects</SelectItem>
+                            <SelectItem value="10">10 — Company, 10 live projects</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -213,7 +213,7 @@ const Booking = () => {
                     <div>
                       <Label className="flex items-center gap-1.5 mb-3 text-card-foreground text-[11px] uppercase tracking-wider font-normal">
                         <CalendarDays className="h-3 w-3" />
-                        Start & Review
+                        Meeting window — 30 min · EET
                       </Label>
                       <Calendar
                         mode="range"
@@ -225,7 +225,7 @@ const Booking = () => {
                       />
                       {dateRange?.from && dateRange?.to && (
                         <p className="text-xs text-muted-foreground font-light mt-2 text-center">
-                          {Math.ceil((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24))} days selected
+                          {Math.ceil((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24))} day window
                         </p>
                       )}
                     </div>
@@ -348,7 +348,7 @@ const Booking = () => {
                     <div className="space-y-2">
                       <h3 className="text-xl font-light text-foreground">Request Sent</h3>
                       <p className="text-sm text-muted-foreground font-light">
-                        Thank you, {name}! Your plan request has been submitted.
+                        Thank you, {name}! Your setup request is on its way.
                       </p>
                     </div>
 
@@ -356,13 +356,13 @@ const Booking = () => {
                       <p className="text-xs text-muted-foreground uppercase tracking-wider">Request Summary</p>
                       <div className="text-sm font-light text-foreground space-y-1">
                         <p>
-                          <span className="text-muted-foreground">Model:</span> {getLocationLabel(location)}
+                          <span className="text-muted-foreground">Plan:</span> {getLocationLabel(location)}
                         </p>
                         <p>
                           <span className="text-muted-foreground">Dates:</span> {formatDateRange()}
                         </p>
                         <p>
-                          <span className="text-muted-foreground">Seats:</span> {guests}
+                          <span className="text-muted-foreground">Live projects:</span> {guests}
                         </p>
                         <p>
                           <span className="text-muted-foreground">Email:</span> {email}
@@ -370,7 +370,7 @@ const Booking = () => {
                       </div>
                     </div>
 
-                    <p className="text-xs text-muted-foreground font-light">A confirmation email will be sent to {email}</p>
+                    <p className="text-xs text-muted-foreground font-light">A calendar invite will be sent to {email}</p>
 
                     <Button
                       variant="outline"
@@ -378,7 +378,7 @@ const Booking = () => {
                       className="rounded-md smooth-hover text-[11px] uppercase tracking-wider font-normal mt-4"
                       onClick={handleReset}
                     >
-                      Start Another Request
+                      Book another
                     </Button>
                   </div>
                 </motion.div>

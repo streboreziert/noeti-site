@@ -1,122 +1,91 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Star, ArrowRight } from "lucide-react";
-import { Card } from "./ui/card";
-import { Button } from "./ui/button";
+import { ArrowRight } from "lucide-react";
 import { getFeaturedModels } from "@/data/models";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ModelCard from "./ModelCard";
+import { Reveal } from "./motion/Reveal";
+import { TextReveal } from "./motion/TextReveal";
+import { EASE } from "@/lib/motion";
 
+/** Three models fanned out like cards on a table; straighten on hover. */
 const Locations = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const isMobile = useIsMobile();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const models = getFeaturedModels();
 
-  const featuredLocations = getFeaturedModels();
-
-  const getCardStyle = (index: number) => {
-    const baseRotation = [-4, 0, 4];
-    const baseX = [-280, 0, 280];
-    return { rotate: baseRotation[index], x: baseX[index] };
-  };
-
-  const renderCard = (location: ReturnType<typeof getFeaturedModels>[number]) => (
-    <Link to={`/model/${location.id}`} className="block">
-      <div className="relative h-48 overflow-hidden">
-        <img src={location.image} alt={location.name} className="w-full h-full object-cover" />
-        <div className="absolute top-3 right-3 bg-card/95 backdrop-blur-sm px-2 py-1 rounded-md flex items-center gap-1">
-          <Star className="h-3 w-3 fill-primary text-primary" />
-          <span className="font-light text-xs">{location.rating}</span>
-        </div>
-      </div>
-      <div className="p-6">
-        <h3 className="text-base font-normal mb-1 text-card-foreground tracking-tight">{location.name}</h3>
-        <div className="flex items-center gap-1 text-muted-foreground mb-4 text-xs font-light">
-          <MapPin className="h-3 w-3" />
-          <span>{location.location}</span>
-        </div>
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {location.features.map((feature) => (
-            <span key={feature} className="text-[10px] uppercase tracking-wide px-2 py-1 bg-accent text-accent-foreground rounded-sm font-light">
-              {feature}
-            </span>
-          ))}
-        </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-xl font-light text-foreground">€{location.price}</span>
-            <span className="text-muted-foreground text-xs font-light">/mo</span>
-          </div>
-          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 text-xs font-light">
-            View Details
-            <ArrowRight className="ml-1 h-3 w-3" />
-          </Button>
-        </div>
-      </div>
-    </Link>
-  );
+  const fan = [
+    { rotate: -6, x: -330, y: 24 },
+    { rotate: 0, x: 0, y: 0 },
+    { rotate: 6, x: 330, y: 24 },
+  ];
 
   return (
-    <section id="locations" className="py-32 lg:py-40 bg-background" ref={ref}>
-      <div className="container mx-auto px-6 lg:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mb-4 block">Our Models</span>
-          <h2 className="text-2xl md:text-3xl font-light mb-4 text-foreground tracking-tight">Featured Plans</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto font-light">
-            Three clear models — Solo, Desk, and Studio — priced in euros
-          </p>
-        </motion.div>
+    <section id="locations" className="relative py-28 lg:py-40 bg-background overflow-hidden" ref={ref}>
+      <div className="absolute inset-0 bg-dots opacity-60 [mask-image:radial-gradient(ellipse_at_center,#000,transparent_70%)]" />
+      <div className="container mx-auto px-6 lg:px-12 relative">
+        <div className="text-center mb-16 lg:mb-20">
+          <Reveal>
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary mb-4 block">Access</span>
+          </Reveal>
+          <TextReveal as="h2" text="Three plans. One model." className="text-3xl md:text-5xl font-light tracking-tight mb-5" />
+          <Reveal delay={0.2}>
+            <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto font-light">
+              Same physical model on every plan. Usage at 1×, 5×, and 20×. Live projects at 1, 3, and 10.
+            </p>
+          </Reveal>
+        </div>
 
         {isMobile ? (
-          <div className="flex flex-col gap-6 w-full overflow-hidden">
-            {featuredLocations.map((location) => (
-              <div key={location.id} className="w-full">
-                <Card className="overflow-hidden border border-border bg-card shadow-lg w-full">{renderCard(location)}</Card>
-              </div>
+          <div className="flex flex-col gap-6">
+            {models.map((m, i) => (
+              <Reveal key={m.id} delay={i * 0.08}>
+                <ModelCard model={m} highlight={m.id === "lab"} tilt={false} />
+              </Reveal>
             ))}
           </div>
         ) : (
-          <div className="relative flex justify-center items-center h-[500px]">
-            {featuredLocations.map((location, index) => {
-              const isHovered = hoveredIndex === index;
-              const cardStyle = getCardStyle(index);
+          <div className="relative flex justify-center items-start h-[620px]">
+            {models.map((m, index) => {
+              const isHovered = hovered === index;
+              const f = fan[index];
               return (
                 <motion.div
-                  key={location.id}
-                  initial={{ opacity: 0, y: 50, ...cardStyle }}
+                  key={m.id}
+                  initial={{ opacity: 0, y: 80, rotate: 0, x: 0 }}
                   animate={
                     isInView
                       ? {
                           opacity: 1,
-                          y: isHovered ? -20 : 0,
-                          rotate: isHovered ? 0 : cardStyle.rotate,
-                          x: cardStyle.x,
-                          scale: isHovered ? 1.05 : 1,
-                          zIndex: isHovered ? 50 : 10 - Math.abs(index - 1),
+                          x: f.x,
+                          y: isHovered ? f.y - 24 : f.y,
+                          rotate: isHovered ? 0 : f.rotate,
+                          scale: isHovered ? 1.04 : 1,
                         }
                       : {}
                   }
-                  transition={{ duration: 0.4, delay: isInView && !hoveredIndex ? index * 0.15 : 0, ease: "easeOut" }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  className="absolute w-[320px] cursor-pointer"
+                  transition={{ duration: 0.7, delay: isInView && hovered === null ? index * 0.12 : 0, ease: EASE }}
+                  onMouseEnter={() => setHovered(index)}
+                  onMouseLeave={() => setHovered(null)}
+                  className="absolute w-[340px]"
                   style={{ zIndex: isHovered ? 50 : 10 - Math.abs(index - 1) }}
                 >
-                  <Card className={`overflow-hidden border border-border bg-card transition-shadow duration-300 ${isHovered ? "shadow-2xl" : "shadow-lg"}`}>
-                    {renderCard(location)}
-                  </Card>
+                  <ModelCard model={m} highlight={m.id === "lab"} />
                 </motion.div>
               );
             })}
           </div>
         )}
+
+        <Reveal className="text-center mt-14" delay={0.3}>
+          <Link to="/models" className="inline-flex items-center gap-2 text-sm text-primary hover:gap-4 transition-all">
+            See all three plans
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );
